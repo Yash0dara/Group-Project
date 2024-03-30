@@ -43,12 +43,13 @@ async function run() {
 
     
     
-    //get
-    // app.get("/all",async(req,res)=>{
-    //     const product = productCollection.find();
-    //     const result = await product.toArray();
-    //     res.send(result);
-    // })
+    //get one product
+    app.get("/product/:id",async(req,res)=>{
+        const id= req.params.id;
+        const filter = { _id: new ObjectId(id) };
+        const result = await productCollection.findOne(filter);
+        res.send(result);
+    })
 
     //update
     app.patch("/product/:id", async (req, res) => {
