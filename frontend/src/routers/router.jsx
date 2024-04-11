@@ -3,16 +3,17 @@ import App from "../App";
 import Home from "../home/Home";
 import Shop from "../shop/Shop";
 import About from "../components/About";
-import Blog from "../components/Blog";
 import Workouts from "../components/Workouts";
 import Reviews from "../components/Reviews";
 import Bookings from "../components/Bookings";
+import Cart from "../shop/Cart";
 import SingleProduct from "../shop/SingleProduct";
 import DashboardLayout from "../dashboard/DashboardLayout";
 import Dashboard from "../dashboard/Dashboard";
 import UploadProduct from "../dashboard/UploadProduct";
 import EditProduct from "../dashboard/EditProduct";
 import ManageProduct from "../dashboard/ManageProduct";
+
 
 const router = createBrowserRouter([
   {
@@ -31,10 +32,7 @@ const router = createBrowserRouter([
         path: "/about",
         element: <About/>
       },
-      {
-        path: "/blog",
-        element:<Blog/>        
-      },
+     
       {
         path: "/workouts",
         element:<Workouts/>
@@ -45,7 +43,13 @@ const router = createBrowserRouter([
       },{
         path: "/bookings",
         element: <Bookings />,
-      },{
+      }
+      // ,
+      // {
+      //   path: "/cart",
+      //   element: <Cart/>,
+      // }
+      ,{
         path:"/product/:id",
         element:<SingleProduct/>,
         loader:({params})=>fetch(`http://localhost:5000/product/${params.id}`)

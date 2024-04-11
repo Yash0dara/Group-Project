@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
+
 //icons
-import { FaBarsStaggered, FaBlog, FaXmark } from "react-icons/fa6";
-const Navbar = () => {
+import { FaBarsStaggered, FaBlog, FaXmark ,FaCartShopping,FaUser } from "react-icons/fa6";
+const Navbar = ({size,setShow}) => {
     //hooks
     const [isMenuOpen,setMenuOpen] = useState(false);
     const [isSticky,setSticky] = useState(false);
@@ -35,7 +36,7 @@ const navItems=[
     {link: "Home" , path:"/"},
     {link: "Bookings" , path:"/bookings"},
     {link: "Workouts" , path:"/workouts"},
-    {link: "Shop" , path:"/shop"},
+    {link: "Shop" , path:"/shop" },
     {link: "Add Product" , path:"/admin/dashboard"},
     {link: "Reviews" , path:"/reviews"},
 ]
@@ -46,19 +47,34 @@ const navItems=[
             <div className='flex justify-between items-center text-base gap-0'>
                 {/* logo  */}
                 
-                <Link to="/" className='text-2xl font-bold text-blue-700 flex items-center gap-2'><FaBlog
-                className='inline-block'/>Products</Link>
-
+                <span >
+                     <Link to="/shop" className='text-2xl font-bold text-blue-700 flex items-center gap-2'><FaBlog
+                className='inline-block' />Products</Link>
+                </span>
+               
 
                 <ul className='md:flex space-x-12 hidden'>
                     {
                         navItems.map(({link,path})=>
                         <Link key={path} to={path} className='block text-base text-black uppercase
-                        cursor-pointer hover:text-blue-700'> {link}</Link> )
+                        cursor-pointer hover:text-blue-700' onClick={()=>setShow(true)}> {link}
+                        </Link> )
                                 
                             
                     }
                 </ul>
+                    <div onClick={()=>setShow(false)}>
+                         <Link to="" className='text-2xl  text-blue-500  '><FaCartShopping
+                className='inline-block'/></Link>
+                <span>
+                    {size}
+                </span>
+                    </div>
+               
+                
+                <Link to="/" className='text-2xl text-blue-500  items-end'><FaUser
+                className='inline-block'/></Link>
+                
 
                {/* btn for lg */}
                <div className='space-x-12 hidden lg:flex items-center'> 
@@ -82,6 +98,7 @@ const navItems=[
                          <Link key={path} to={path} className='block text-base text-white uppercase
                          cursor-pointer'> {link}</Link> )
                     }
+                  
                  </div>
         </nav>
     </header>

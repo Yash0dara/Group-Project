@@ -1,47 +1,84 @@
-import React, { useState } from "react";
-import CartItem from "./CartItem";
+import React, { useEffect, useState } from 'react'
+import { Table } from 'flowbite-react'
 
-const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: "Product 1", image: "https://example.com/product1.jpg", price: 10, quantity: 2 },
-    { id: 2, name: "Product 2", image: "https://example.com/product2.jpg", price: 20, quantity: 1 },
-    { id: 3, name: "Product 3", image: "https://example.com/product3.jpg", price: 30, quantity: 3 },
-  ]);
+const Cart = ({product,cart, setCart,handleChange}) => {
+  const [price ,setPrice]=useState(0);
+  
+  const handlePrice=()=>{
+    let ans =0;
+    cart.map((product)=>{
+      ans+= product.price * product.quantity
+    })
+    setPrice(ans);
+  }
 
-  const onAdd = (id, quantity) => {
-    setCartItems(
-      cartItems.map((item) => {
-        if (item.id === id) {
-          return { ...item, quantity: item.quantity + quantity };
-        }
-        return item;
-      })
-    );
-  };
+  const handleRemove=(id)=>{
+    const arr= cart.filter((product)=> product._id !== id)
+    setCart(arr);
+  }
 
-  const onSubtract = (id, quantity) => {
-    setCartItems(
-      cartItems.map((item) => {
-        if (item.id === id) {
-          return { ...item, quantity: item.quantity - quantity };
-        }
-        return item;
-      })
-    );
-  };
+  useEffect(()=>{
+    handlePrice();
+  })
 
   return (
-    <div className="space-y-4">
-      {cartItems.map((item) => (
-        <CartItem
-          key={item.id}
-          item={item}
-          onAdd={() => onAdd(item.id, 1)}
-          onSubtract={() => onSubtract(item.id, 1)}
-        />
-      ))}
-    </div>
-  );
-};
+    
+    <div className='px-4 my-12'>
+    <h2 className='mb-8 text-3xl font-bold'>Product Management. </h2>
+    {/* table fpr product detailing */}
+    <div className="overflow-x-auto">
+  <Table className='lg:w-[1180px]'>
+    <Table.Head>
 
-export default Cart;
+      <Table.HeadCell>Product name</Table.HeadCell>
+      <Table.HeadCell>Price</Table.HeadCell>
+      <Table.HeadCell>Category</Table.HeadCell>
+      <Table.HeadCell>Description</Table.HeadCell>
+      <Table.HeadCell>
+        <span>
+            Edit or Manage
+        </span>
+      </Table.HeadCell>
+    </Table.Head>
+        
+    {
+      cart?.map(product =>
+
+<Table.Body className="divide-y" key={product._id}>
+           <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+            <Table.Cell>{product.productName}</Table.Cell>
+            <Table.Cell> <img src={product.imageUrl} width="50" height="50" /></Table.Cell>
+            <Table.Cell>{product.price}</Table.Cell>
+            <Table.Cell>
+            <div className="flex flex-row mt-2">
+                <button  className="px-5 py-2 font-bold" onClick={()=>handleChange(product,+1)}>+</button>
+                <span className="px-5 py-2 font-bold">{product.quantity}</span>
+                <button className="px-5 py-2 font-bold"  onClick={()=>handleChange(product,-1)}>-</button>
+            </div>
+            </Table.Cell>
+            <Table.Cell>
+              <button className='bg-red-600 px-4 py-1 font-semibold text-white rounded-3xl hover:bg-sky-600'
+              onClick={()=>handleRemove(product._id)}>Remove</button>
+            </Table.Cell>
+          </Table.Row>
+    </Table.Body>
+
+      )
+    }    
+    <Table.Body>
+        <Table.Row>
+            <Table.Cell>      
+              <span className="font-bold text-sky-500 mr-5">Total price:</span>
+              <span className="font-bold text-darkgreen text-2xl"> Rs {price}</span>
+            </Table.Cell>
+
+        </Table.Row>
+    </Table.Body>
+  </Table>
+  </div>
+  </div>
+ 
+  )
+}
+
+export default Cart
