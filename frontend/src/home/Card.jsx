@@ -28,15 +28,13 @@ const Card = () => {
         modules={[EffectCreative]}
         className="mySwiper"
       >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
+        <SwiperSlide><img src="./img/shirt.png"/></SwiperSlide>
+        <SwiperSlide><img src="./img/cloth.jfif"/></SwiperSlide>
+        <SwiperSlide><img src="./img/mat.jfif"/></SwiperSlide>
+        <SwiperSlide><img src="./img/protein.jfif"/></SwiperSlide>
+        <SwiperSlide><img src="./img/protein2.jfif"/></SwiperSlide>
+        <SwiperSlide><img src="./img/shirt.png"/></SwiperSlide>
+        <SwiperSlide><img src="./img/shirt.png"/></SwiperSlide>
       </Swiper>
 
     </div>
