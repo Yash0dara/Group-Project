@@ -1,7 +1,16 @@
 import React from 'react'
 import Card from '../home/Card'
+import {FiArrowRight} from "react-icons/fi"
+import { useNavigate } from 'react-router-dom'
+
+
+
 
 const HomeBanner = () => {
+
+  
+  const navigate = useNavigate()
+
     return (
         <div className='px-4 lg:px-24 bg-teal-100 flex items-center '>
         <div className='flex w-full flex-col md:flex-row justify-between items-center gap-12 py-40'>
@@ -12,7 +21,7 @@ const HomeBanner = () => {
                blah blah blah blah   blah blah blah blah blah blah blah blah blah blah blah 
                blah blah blah  blah blah blah blah blah blah blah blah blah blah blah blah blah blah</p>
             
-          
+          <button className='border-solid border-red-700 border-4 text-amber-900 px-10 py-5 text-xl uppercase tacking-widest hover:bg-amber-500 hover:text-white rounded-full' onClick={()=>navigate("/BMI")}>BMI calculator<FiArrowRight/></button>
              
             </div>
             {/* right side */}

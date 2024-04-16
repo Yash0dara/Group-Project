@@ -27,7 +27,7 @@ function App() {
 
   return (
     <>
-  
+  {/* <Navbar size={cart.length}/> */}
     <div className='min-h-screen'> 
     
    
