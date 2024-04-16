@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 
 
 //icons
 import { FaBarsStaggered, FaBlog, FaXmark ,FaCartShopping,FaUser } from "react-icons/fa6";
+
+
+
 const Navbar = ({size,setShow}) => {
     //hooks
     const [isMenuOpen,setMenuOpen] = useState(false);
@@ -39,7 +42,9 @@ const navItems=[
     {link: "Shop" , path:"/shop" },
     {link: "Add Product" , path:"/admin/dashboard"},
     {link: "Reviews" , path:"/reviews"},
-]
+ ]
+
+const navigate = useNavigate()
 
   return (
     <header className='w-full bg-transparent fixed top-0 left-0 right-0 transition-all ease-in duration-500'>
@@ -68,13 +73,14 @@ const navItems=[
                 className='inline-block'/></Link>
                 <span>
                     {size}
-                </span>
+                </span> 
                     </div>
                
                 
-                <Link to="/" className='text-2xl text-blue-500  items-end'><FaUser
+                <Link to="/profile" className='text-2xl text-blue-500  items-end'><FaUser
                 className='inline-block'/></Link>
                 
+                <button className='btn bg-blue-600 text-white py-1 px-3 md:ml-8 rounded' onClick={()=>navigate("/login")}>Login </button>
 
                {/* btn for lg */}
                <div className='space-x-12 hidden lg:flex items-center'> 

@@ -16,7 +16,7 @@ const SideBar = () => {
         <Sidebar.Item href="#" icon={HiInbox}>
           Inbox
         </Sidebar.Item>
-        <Sidebar.Item href="#" icon={HiUser}>
+        <Sidebar.Item href="/admin/dashboard/user" icon={HiUser}>
           Users
         </Sidebar.Item>
         <Sidebar.Collapse icon={HiShoppingBag} label="Products Management">

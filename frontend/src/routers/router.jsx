@@ -14,6 +14,18 @@ import UploadProduct from "../dashboard/UploadProduct";
 import EditProduct from "../dashboard/EditProduct";
 import ManageProduct from "../dashboard/ManageProduct";
 
+import Username from "../components/Username";
+import Password from "../components/Password";
+import Register from "../components/Register";
+import BMI from "../components/BMI";
+import Admin from "../dashboard/Admin";
+import Profile from "../components/Profile";
+import Recovery from "../components/Recovery";
+import Reset from "../components/Reset";
+
+// import {  ProtectRoute } from './middleware/auth'
+
+
 
 const router = createBrowserRouter([
   {
@@ -40,10 +52,40 @@ const router = createBrowserRouter([
       {
         path: "/reviews",
         element:<Reviews/>
-      },{
+      },
+      {
         path: "/bookings",
         element: <Bookings />,
+      },
+      {
+        path: "/login",
+        element: <Username />,
+      },
+      {
+          path : '/password',
+          element : <Password/>
+      },
+      {
+          path : '/register',
+          element : <Register></Register>
+       },
+      {
+          path : '/bmi',
+          element : <BMI></BMI>
+      },
+      {
+          path : '/profile',
+          element : <Profile></Profile>
+      },
+      {
+          path : '/recovery',
+          element : <Recovery></Recovery>
+      },
+      {
+          path : '/reset',
+          element : <Reset></Reset>
       }
+
       // ,
       // {
       //   path: "/cart",
@@ -68,6 +110,10 @@ const router = createBrowserRouter([
       },{
         path:"/admin/dashboard/manage",
         element:<ManageProduct/>
+      },
+      {
+          path : '/admin/dashboard/user',
+          element : <Admin></Admin>
       },
       {
         path:"/admin/dashboard/edit/:id",
