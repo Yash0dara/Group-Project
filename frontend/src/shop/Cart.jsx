@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { Table } from 'flowbite-react'
 
-const Cart = ({product,cart, setCart,handleChange}) => {
+
+
+const Cart = ({cart, setCart,handleChange}) => {
   const [price ,setPrice]=useState(0);
-  
+
+  useEffect(()=>{
+    localStorage.setItem('theCart',JSON.stringify(cart));
+  },[cart]);
+
+  //cart total price
   const handlePrice=()=>{
     let ans =0;
     cart.map((product)=>{
-      ans+= product.price * product.quantity
+      ans+= product.price * product.amount
     })
     setPrice(ans);
   }
 
+  //cart remove items
   const handleRemove=(id)=>{
     const arr= cart.filter((product)=> product._id !== id)
     setCart(arr);
@@ -24,10 +32,10 @@ const Cart = ({product,cart, setCart,handleChange}) => {
   return (
     
     <div className='px-4 my-12'>
-    <h2 className='mb-8 text-3xl font-bold'>Product Management. </h2>
+    <h2 className='mb-8 text-3xl font-bold text-white '> heelooo mata methana ida onne </h2>
     {/* table fpr product detailing */}
     <div className="overflow-x-auto">
-  <Table className='lg:w-[1180px]'>
+  <Table className='lg:w-[1180px] mx-auto'>
     <Table.Head>
 
       <Table.HeadCell>Product name</Table.HeadCell>
@@ -52,7 +60,8 @@ const Cart = ({product,cart, setCart,handleChange}) => {
             <Table.Cell>
             <div className="flex flex-row mt-2">
                 <button  className="px-5 py-2 font-bold" onClick={()=>handleChange(product,+1)}>+</button>
-                <span className="px-5 py-2 font-bold">{product.quantity}</span>
+                <span className="px-5 py-2 font-bold">{ product.amount}</span>
+                {/* <select>1</select> */}
                 <button className="px-5 py-2 font-bold"  onClick={()=>handleChange(product,-1)}>-</button>
             </div>
             </Table.Cell>
@@ -74,7 +83,8 @@ const Cart = ({product,cart, setCart,handleChange}) => {
 
         </Table.Row>
     </Table.Body>
-  </Table>
+  </Table> 
+  <button  className="mb-10 mt-10 mr-20 float-right bg-blue-500 text-white py-2 px-4 rounded">Proceed To Payment</button>
   </div>
   </div>
  

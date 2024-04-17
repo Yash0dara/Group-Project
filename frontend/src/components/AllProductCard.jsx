@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Card } from 'flowbite-react';
+import { Link } from "react-router-dom";
 
 const AllProductCard = ({product,handleClick}) => {
   
@@ -11,7 +12,7 @@ const AllProductCard = ({product,handleClick}) => {
 <div className="grid gap-12 my-14 lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-3 grid-col-1">
     {
         product.map(product=><Card className="max-w-sm" key={product._id}>
-           
+            <Link to ={`/product/${product._id}`}>
             <img src={product.imageUrl}/>
             <a href={`http://127.0.0.1:5173/product/${product._id}`}>
               <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
@@ -65,11 +66,12 @@ const AllProductCard = ({product,handleClick}) => {
               <span className="ml-3 mr-2 rounded bg-cyan-100 px-2.5 py-0.5 text-xs font-semibold text-cyan-800 dark:bg-cyan-200 dark:text-cyan-800">
                 5.0
               </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-3xl font-bold text-gray-900 dark:text-white">Rs {product.price}</span>
+            </div>  
+            </Link>
+            <div className="mb-5 mt-2.5 flex items-center justify-between">
+              <span className="text-xl font-bold text-gray-900 dark:text-white">Rs {product.price}</span>
               <button onClick={()=>handleClick(product)}
-                className="rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+               className="rounded-lg bg-cyan-700 px-3 py-1.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
                >
                 Add to cart
               </button>

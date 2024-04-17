@@ -31,6 +31,7 @@ const handleSubmit = (event) =>{
   const quantity = form.quantity.value;
   const description = form.description.value;
   const productCategory = form.productCategory.value;
+  const amount = form.amount.value;
 
 const productObj ={
   productName,
@@ -38,7 +39,8 @@ const productObj ={
   price,
   quantity,
   description,
-  productCategory
+  productCategory,
+  amount
 }
   console.log(productObj);
 
@@ -101,11 +103,11 @@ return (
           </div>
         </div>  
 
-        {/* SECOND ROW    price and quantity*/}
+        {/* SECOND ROW    price ,quantity and amount*/}
        <div className='flex gap-8'>
                  
            {/* Product Price */}
-              <div className='lg:w-1/2'>
+              <div className='lg:w-2/4'>
                 <div className="mb-2 block">
                     <Label
                       htmlFor="price" 
@@ -122,7 +124,7 @@ return (
               </div>
 
               {/* quantity */}
-              <div className='lg:w-1/2'>
+              <div className='lg:w-1/4'>
                 <div className="mb-2 block">
                     <Label
                       htmlFor="quantity" 
@@ -137,7 +139,26 @@ return (
                       required 
                   />
               </div>
+
+              {/* amount */}
+              <div className='lg:w-1/4'>
+                <div className="mb-2 block">
+                    <Label
+                      htmlFor="amount" 
+                      value="amount :" 
+                    />
+                </div>
+                      <TextInput 
+                      id="amount" 
+                      name='amount'
+                      type="number"
+                      defaultValue={1} 
+                      readOnly="true"
+                  />
+              </div>
        </div> 
+
+
         {/* THIRD ROW    description and category*/}
         <div className='flex gap-8'>
 

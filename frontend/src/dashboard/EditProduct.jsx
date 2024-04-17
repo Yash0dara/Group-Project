@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { Button, Checkbox, TextInput } from 'flowbite-react';
 
 const EditProduct = () => {
-const id= useParams();
+const {id}= useParams();
 const {productName,productCategory,price,quantity,description,imageUrl}=useLoaderData();
 
 const productCategories=[
@@ -33,14 +33,15 @@ const handleUpdate = (event) =>{
   const quantity = form.quantity.value;
   const description = form.description.value;
   const productCategory = form.productCategory.value;
-
+  const amount = form.amount.value;
 const updateProductObj ={
   productName,
   imageUrl,
   price,
   quantity,
   description,
-  productCategory
+  productCategory,
+  amount
 }
 
  // console.log(productObj);
@@ -107,44 +108,61 @@ return (
           </div>
         </div>  
 
-        {/* SECOND ROW    price and quantity*/}
-       <div className='flex gap-8'>
+      {/* SECOND ROW    price ,quantity and amount*/}
+      <div className='flex gap-8'>
                  
-           {/* Product Price */}
-              <div className='lg:w-1/2'>
-                <div className="mb-2 block">
-                    <Label
-                      htmlFor="price" 
-                      value="price :" 
-                    />
-                </div>
-                      <TextInput 
-                      id="price" 
-                      name='price'
-                      type="text"
-                      placeholder="1000.00 " 
-                      defaultValue={price}
-                      required 
-                  />
-              </div>
-              {/* quantity */}
-              <div className='lg:w-1/2'>
-                <div className="mb-2 block">
-                    <Label
-                      htmlFor="quantity" 
-                      value="quantity :" 
-                    />
-                </div>
-                      <TextInput 
-                      id="quantity" 
-                      name='quantity'
-                      type="text"
-                      placeholder="100" 
-                      defaultValue={quantity}
-                      required 
-                  />
-              </div>
-       </div> 
+                 {/* Product Price */}
+                    <div className='lg:w-2/4'>
+                      <div className="mb-2 block">
+                          <Label
+                            htmlFor="price" 
+                            value="price :" 
+                          />
+                      </div>
+                            <TextInput 
+                            id="price" 
+                            name='price'
+                            type="text"
+                            placeholder="1000.00 " 
+                            required 
+                        />
+                    </div>
+      
+                    {/* quantity */}
+                    <div className='lg:w-1/4'>
+                      <div className="mb-2 block">
+                          <Label
+                            htmlFor="quantity" 
+                            value="quantity :" 
+                          />
+                      </div>
+                            <TextInput 
+                            id="quantity" 
+                            name='quantity'
+                            type="text"
+                            placeholder="100" 
+                            required 
+                        />
+                    </div>
+      
+                    {/* amount */}
+                    <div className='lg:w-1/4'>
+                      <div className="mb-2 block">
+                          <Label
+                            htmlFor="amount" 
+                            value="amount :" 
+                          />
+                      </div>
+                            <TextInput 
+                            id="amount" 
+                            name='amount'
+                            type="number"
+                            defaultValue={1} 
+                            readOnly="true"
+                        />
+                    </div>
+             </div> 
+      
         {/* THIRD ROW    description and category*/}
         <div className='flex gap-8'>
 
