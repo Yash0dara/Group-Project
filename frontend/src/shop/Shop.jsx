@@ -4,10 +4,10 @@ import Navbar from "../components/Navbar";
 import Allproducts from "./Allproducts";
 import Cart from "./Cart";
 
-
 //toast
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 
 const cartFromLocalStorage = JSON.parse(localStorage.getItem('theCart') ||'[]');
 

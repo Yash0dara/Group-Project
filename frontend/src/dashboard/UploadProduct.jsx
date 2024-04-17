@@ -2,6 +2,10 @@ import { Label, Select, Textarea } from 'flowbite-react'
 import React, { useState } from 'react'
 
 
+//toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { Button, Checkbox, TextInput } from 'flowbite-react';
 
 
@@ -54,7 +58,7 @@ fetch("http://localhost:5000/add",{
   body: JSON.stringify(productObj)
 }).then(res => res.json()).then(data => {
   //console.log(data);
-  alert("Product uploaded succesfullt!")
+  toast.info("Product uploaded succesfullt!")
   form.reset();
 })
 
@@ -201,11 +205,21 @@ return (
 
         </div>    
           
-   
-
-
-
       <Button type="submit">Submit</Button>
+
+      
+<ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"         
+          />     
     </form>
     
     </div>

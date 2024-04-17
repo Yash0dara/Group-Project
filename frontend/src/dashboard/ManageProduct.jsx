@@ -3,6 +3,10 @@ import { Table } from 'flowbite-react'
 import { Link, json } from 'react-router-dom';
 import Allproducts from '../shop/Allproducts';
 
+//toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const ManageProduct = () => {
     const[allProducts,setAllProducts]= useState([]);
     useEffect(()=>{
@@ -14,7 +18,7 @@ const handleDelete=(id) => {
     fetch(`http://localhost:5000/product/${id}` ,{
         method:"DELETE",
     }).then(res => res.json()).then(data=>{
-        alert("Product is removed")
+        toast.info("Product is removed, Please refresh")
     });
 
 }
@@ -60,6 +64,18 @@ const handleDelete=(id) => {
             </Table.Body>)
         }
 
+<ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"         
+          />     
       </Table>
     </div>
 

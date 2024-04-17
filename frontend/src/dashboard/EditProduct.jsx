@@ -6,6 +6,10 @@ import { useState } from 'react'
 
 import { Button, Checkbox, TextInput } from 'flowbite-react';
 
+//toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const EditProduct = () => {
 const {id}= useParams();
 const {productName,productCategory,price,quantity,description,imageUrl}=useLoaderData();
@@ -55,7 +59,7 @@ const updateProductObj ={
 
     }).then(res=>res.json()).then(data=>{
       console.log(data)
-      alert("Book succesfully edited!");
+      toast.info("item succesfully edited!");
 
     })
 
@@ -124,6 +128,7 @@ return (
                             name='price'
                             type="text"
                             placeholder="1000.00 " 
+                            defaultValue={price}
                             required 
                         />
                     </div>
@@ -141,6 +146,7 @@ return (
                             name='quantity'
                             type="text"
                             placeholder="100" 
+                            defaultValue={quantity}
                             required 
                         />
                     </div>
@@ -203,12 +209,21 @@ return (
 
 
         </div>    
-          
-   
-
-
-
+    
       <Button type="submit">Update Product</Button>
+      
+<ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"         
+          />     
     </form>
     
     </div>
