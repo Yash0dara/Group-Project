@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import AllProductCard from "../components/AllProductCard";
 import Banner from "../components/Banner";
 
@@ -7,7 +8,12 @@ const Allproducts = ({handleClick}) => {
     const [product,setProduct]=useState([]);
     
     useEffect(()=>{
-        fetch("http://localhost:5000/all").then(res => res.json()).then(data=> setProduct(data));
+        axios.get("http://localhost:8070/product/").then((res)=>{
+          setProduct(res.data)
+        }).catch((err)=>{
+          alert(err.message)
+        })
+      
     },[])
   return (
    <div>

@@ -2,7 +2,7 @@ import React from 'react'
 import { useLoaderData, useParams } from 'react-router-dom'
 import { Label, Select, Textarea } from 'flowbite-react'
 import { useState } from 'react'
-
+import axios from "axios";
 
 import { Button, Checkbox, TextInput } from 'flowbite-react';
 
@@ -11,8 +11,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const EditProduct = () => {
-const {id}= useParams();
-const {productName,productCategory,price,quantity,description,imageUrl}=useLoaderData();
+  const { id } = useParams();
+
+const { product: initialProduct}= useLoaderData();
+
+console.log('Product:', initialProduct);
 
 const productCategories=[
   "Clothing",
@@ -27,7 +30,8 @@ const  handleCategories = (event) => {
 
 
 // handle updates
-const handleUpdate = (event) =>{
+const handleUpdate = (event,id) =>{
+
   event.preventDefault();
   const form = event.target;
 
@@ -38,6 +42,11 @@ const handleUpdate = (event) =>{
   const description = form.description.value;
   const productCategory = form.productCategory.value;
   const amount = form.amount.value;
+
+  
+  console.log('Product ID:', id);
+  console.log('Update product object:', {id,productName, imageUrl, price, quantity, description, productCategory, amount});
+
 const updateProductObj ={
   productName,
   imageUrl,
@@ -50,18 +59,16 @@ const updateProductObj ={
 
  // console.log(productObj);
 //updates book data
-  fetch(`http://localhost:5000/product/${id}`,{
-      method:"PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updateProductObj)
-
-    }).then(res=>res.json()).then(data=>{
-      console.log(data)
-      toast.info("item succesfully edited!");
-
-    })
+axios.put(`http://localhost:8070/product/update/${id}`, updateProductObj)
+.then(response => {
+  console.log(response.data);
+  toast.info("Item successfully updated!");
+  console.log('Product ID:', id);
+})
+.catch(error => {
+  console.error('Error updating item:', error);
+  toast.error("Error updating item. Please try again.");
+});
 
 
 } 
@@ -69,7 +76,7 @@ return (
     <div className='px-4 my-12'>
       <h2 className='mb-8 text-3xl font-bold'>Update Product data</h2>
 
-      <form onSubmit={handleUpdate} className="flex lg:w-[1180px] flex-col gap-4">
+      <form onSubmit={(event) => handleUpdate(event, id)}className="flex lg:w-[1180px] flex-col gap-4">
         
 
 
@@ -89,7 +96,7 @@ return (
                   name='productName'
                   type="text"
                   placeholder="Product Name" 
-                  defaultValue={productName}
+                  defaultValue={initialProduct?.productName}
                   required 
               />
           </div>
@@ -106,7 +113,7 @@ return (
                   name='imageUrl'
                   type="text"
                   placeholder="URL" 
-                  defaultValue={imageUrl}
+                  defaultValue={initialProduct?.imageUrl}
                   required 
               />
           </div>
@@ -128,8 +135,8 @@ return (
                             name='price'
                             type="text"
                             placeholder="1000.00 " 
-                            defaultValue={price}
-                            required 
+                            defaultValue={initialProduct?.price}
+                            required pattern="\d+(\.\d{1,2})"
                         />
                     </div>
       
@@ -146,8 +153,8 @@ return (
                             name='quantity'
                             type="text"
                             placeholder="100" 
-                            defaultValue={quantity}
-                            required 
+                            defaultValue={initialProduct?.quantity}
+                            required pattern="\d+"
                         />
                     </div>
       
@@ -164,7 +171,7 @@ return (
                             name='amount'
                             type="number"
                             defaultValue={1} 
-                            readOnly="true"
+                            readOnly={true}
                         />
                     </div>
              </div> 
@@ -185,7 +192,7 @@ return (
                   name='description'
                   type="text"
                   placeholder="Leave a description..." 
-                  defaultValue={description}
+                  defaultValue={initialProduct?.description}
                   required rows={4}
               />
 

@@ -14,9 +14,8 @@ const Banner = () => {
         {/* right side */}
          <div className='md:w-1/2 space-y-8 h-full'>
           <h2 className='text-5xl font-bold leading-snug text-black'>Buy from one place!<span className='text-blue-700'> For the best price</span></h2>
-          <p className='md:w-4/5'>blah blah blah blah blah blah blah blah blah blah
-           blah blah blah blah   blah blah blah blah blah blah blah blah blah blah blah 
-           blah blah blah  blah blah blah blah blah blah blah blah blah blah blah blah blah blah</p>
+          <p className='md:w-4/5'>"Discover your fitness essentials here. From gear to apparel, we've got you covered. 
+          Elevate your gym sessions with our curated collection."</p>
         
       
            <div>

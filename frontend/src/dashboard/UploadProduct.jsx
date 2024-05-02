@@ -1,6 +1,6 @@
 import { Label, Select, Textarea } from 'flowbite-react'
 import React, { useState } from 'react'
-
+import axios from "axios";
 
 //toast
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,18 +8,25 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { Button, Checkbox, TextInput } from 'flowbite-react';
 
-
-const UploadProduct = () => {
+const FormTry = () => {
+  
 
 const productCategories=[
   "Clothing",
   "Protein",
   "Gym-Equipment"
 ]
-const [SelectedCategories, setCategories]= useState(productCategories[0]);
+const [productCategory, setCategories]= useState("");
+const [productName, setName]= useState("");
+const [imageUrl, setImg]= useState("");
+const [price, setPrice]= useState("");
+const [quantity, setQuantity]= useState("");
+const [amount, setAmount]= useState(1);
+const [description, setDescription]= useState("");
 
 const  handleCategories = (event) => {
-  console.log(event.target.value);
+  console.log('Selected category:', event.target.value);
+  //console.log(event.target.value);
   setCategories(event.target.value);
 }
 
@@ -27,47 +34,30 @@ const  handleCategories = (event) => {
 // handle submissions
 const handleSubmit = (event) =>{
   event.preventDefault();
-  const form = event.target;
-
-  const productName = form.productName.value;
-  const imageUrl = form.imageUrl.value;
-  const price = form.price.value;
-  const quantity = form.quantity.value;
-  const description = form.description.value;
-  const productCategory = form.productCategory.value;
-  const amount = form.amount.value;
 
 const productObj ={
   productName,
   imageUrl,
   price,
   quantity,
+  amount,
   description,
-  productCategory,
-  amount
+  productCategory
 }
-  console.log(productObj);
-
-
-//send to mongoDB
-fetch("http://localhost:5000/add",{
-  method:"POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(productObj)
-}).then(res => res.json()).then(data => {
-  //console.log(data);
-  toast.info("Product uploaded succesfullt!")
-  form.reset();
-})
+    axios.post("http://localhost:8070/product/add", productObj)
+    .then(() => {
+      alert("Product added!");
+    })
+    .catch((err) => {
+      alert(err);
+    });
 
 } 
 return (
     <div className='px-4 my-12'>
       <h2 className='mb-8 text-3xl font-bold'>Upload Product</h2>
 
-      <form onSubmit={handleSubmit} className="flex lg:w-[1180px] flex-col gap-4">
+      <form method="post" onSubmit={handleSubmit} className="flex lg:w-[1180px] flex-col gap-4">
         
         {/* FIRST ROW    name and category*/} 
         
@@ -87,6 +77,9 @@ return (
                   type="text"
                   placeholder="Product Name" 
                   required 
+                  onChange={(event)=>{
+                    setName(event.target.value);
+                  }}
               />
           </div>
           {/* imageUrl */}
@@ -101,111 +94,127 @@ return (
                   id="imageUrl" 
                   name='imageUrl'
                   type="text"
-                  placeholder="URL" 
-                  required 
+                  required  pattern="https?://.+"
+                  title="Please enter a valid URL (e.g., https://example.com)"
+                  onChange={(event)=>{
+                    setImg(event.target.value);
+                  }}
               />
           </div>
         </div>  
 
-        {/* SECOND ROW    price ,quantity and amount*/}
+          {/* SECOND ROW    price ,quantity and amount*/}
        <div className='flex gap-8'>
                  
-           {/* Product Price */}
-              <div className='lg:w-2/4'>
-                <div className="mb-2 block">
-                    <Label
-                      htmlFor="price" 
-                      value="price :" 
+                 {/* Product Price */}
+                    <div className='lg:w-2/4'>
+                      <div className="mb-2 block">
+                          <Label
+                            htmlFor="price" 
+                            value="price :" 
+                          />
+                      </div>
+                            <TextInput 
+                            id="price" 
+                            name='price'
+                            type="float"
+                            placeholder="1000.00 "  
+                            required pattern="\d+(\.\d{1,2})"
+                            onChange={(event)=>{
+                              setPrice(event.target.value);
+                            }}
+                        />
+                    </div>
+      
+                    {/* quantity */}
+                    <div className='lg:w-1/4'>
+                      <div className="mb-2 block">
+                          <Label
+                            htmlFor="quantity" 
+                            value="quantity :" 
+                          />
+                      </div>
+                            <TextInput 
+                            id="quantity" 
+                            name='quantity'
+                            type="number"
+                            placeholder="100" 
+                            required pattern="\d+"
+                            onChange={(event)=>{
+                              setQuantity(event.target.value);
+                            }}
+                        />
+                    </div>
+      
+                    {/* amount */}
+                    <div className='lg:w-1/4'>
+                      <div className="mb-2 block">
+                          <Label
+                            htmlFor="amount" 
+                            value="amount :" 
+                          />
+                      </div>
+                            <TextInput 
+                            id="amount" 
+                            name='amount'
+                            type="number"
+                            defaultValue={1} 
+                            readOnly={true}
+                            onChange={(event)=>{
+                              setAmount(event.target.value);
+                            }}
+                        />
+                    </div>
+             </div> 
+      
+      
+              {/* THIRD ROW    description and category*/}
+              <div className='flex gap-8'>
+      
+                {/* Product description */}
+                <div className='lg:w-1/2'>
+                  <div className="mb-2 block">
+                      <Label
+                        htmlFor="description" 
+                        value="Product description:" 
+                      />
+                  </div>
+                        <Textarea 
+                        id="description" 
+                        name='description'
+                        type="text"
+                        placeholder="Leave a description..." 
+                        required rows={4}
+                        onChange={(event)=>{
+                          setDescription(event.target.value);
+                        }}
                     />
+      
                 </div>
-                      <TextInput 
-                      id="price" 
-                      name='price'
-                      type="text"
-                      placeholder="1000.00 " 
-                      required 
-                  />
-              </div>
-
-              {/* quantity */}
-              <div className='lg:w-1/4'>
+                {/* Category */}
+                <div className='lg:w-1/2'>
                 <div className="mb-2 block">
-                    <Label
-                      htmlFor="quantity" 
-                      value="quantity :" 
-                    />
+                      <Label
+                        htmlFor="inputState" 
+                        value="Product category:" 
+                      />
+                  </div>
+                    <Select id='inputState' name='productCategory' className='w-full rounded' value={productCategory}
+                    onChange={handleCategories}>
+                        {/* giving the options */}
+                        {
+                          productCategories.map((option)=> <option key={option} value={option}> {option} </option>)
+                        }
+                    </Select>
+      
+                    
                 </div>
-                      <TextInput 
-                      id="quantity" 
-                      name='quantity'
-                      type="text"
-                      placeholder="100" 
-                      required 
-                  />
-              </div>
-
-              {/* amount */}
-              <div className='lg:w-1/4'>
-                <div className="mb-2 block">
-                    <Label
-                      htmlFor="amount" 
-                      value="amount :" 
-                    />
-                </div>
-                      <TextInput 
-                      id="amount" 
-                      name='amount'
-                      type="number"
-                      defaultValue={1} 
-                      readOnly="true"
-                  />
-              </div>
-       </div> 
-
-
-        {/* THIRD ROW    description and category*/}
-        <div className='flex gap-8'>
-
-          {/* Product description */}
-          <div className='lg:w-1/2'>
-            <div className="mb-2 block">
-                <Label
-                  htmlFor="description" 
-                  value="Product description:" 
-                />
-            </div>
-                  <Textarea 
-                  id="description" 
-                  name='description'
-                  type="text"
-                  placeholder="Leave a description..." 
-                  required rows={4}
-              />
-
-          </div>
-          {/* Category */}
-          <div className='lg:w-1/2'>
-          <div className="mb-2 block">
-                <Label
-                  htmlFor="inputState" 
-                  value="Product category:" 
-                />
-            </div>
-              <Select id='inputState' name='productCategory' className='w-full rounded' value={SelectedCategories}
-              onChange={handleCategories}>
-                  {/* giving the options */}
-                  {
-                    productCategories.map((option)=> <option key={option} value={option}> {option} </option>)
-                  }
-              </Select>
-
-              
-          </div>
-
-
-        </div>    
-          
-      <Button type="submit">Submit</Button>
+      
+      
+              </div>    
+                
+            <Button type="submit">Submit</Button>
+      
 
       
 <ToastContainer
@@ -224,6 +233,6 @@ return (
     
     </div>
   )
-}
 
-export default UploadProduct
+}
+export default FormTry

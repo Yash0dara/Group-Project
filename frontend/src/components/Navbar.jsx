@@ -43,15 +43,15 @@ const navItems=[
 
   return (
     <header className='w-full bg-transparent fixed top-0 left-0 right-0 transition-all ease-in duration-500'>
-        <nav className={`py-4 lg:px-24 ${isSticky ? "sticky top-0 left-0 right-0 bg-blue-300":""}`}>
+        <nav className={`py-4 lg:px-24 ${isSticky ? "sticky top-0 left-0 right-0 bg-blue-300":" "}`}>
             <div className='flex justify-between items-center text-base gap-0'>
                 {/* logo  */}
                 
                 <span >
-                     <Link to="/shop" className='text-2xl font-bold text-blue-700 flex items-center gap-2'><FaBlog
-                className='inline-block' />Products</Link>
+                     <Link to="/home" className='text-2xl font-bold text-blue-700 flex items-center gap-2'><img src="./img/logo.png"className="w-16 h-auto" alt="Logo"/></Link>
                 </span>
-               
+               {/* <FaBlog
+                className='inline-block' />K-One */}
 
                 <ul className='md:flex space-x-12 hidden'>
                     {

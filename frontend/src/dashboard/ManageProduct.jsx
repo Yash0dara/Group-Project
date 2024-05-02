@@ -2,24 +2,32 @@ import React, { useEffect, useState } from 'react'
 import { Table } from 'flowbite-react'
 import { Link, json } from 'react-router-dom';
 import Allproducts from '../shop/Allproducts';
-
+import axios from "axios"
 //toast
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ManageProduct = () => {
     const[allProducts,setAllProducts]= useState([]);
+    
     useEffect(()=>{
-        fetch("http://localhost:5000/all").then(res=>res.json()).then(data=> setAllProducts(data));
-    },[])
+      axios.get("http://localhost:8070/product/").then((res)=>{
+        setAllProducts(res.data)
+      }).catch((err)=>{
+        alert(err.message)
+      })
+    
+  },[])
 //delete a product
 const handleDelete=(id) => {
-    console.log(id);
-    fetch(`http://localhost:5000/product/${id}` ,{
-        method:"DELETE",
-    }).then(res => res.json()).then(data=>{
-        toast.info("Product is removed, Please refresh")
-    });
+  console.log(id);
+    axios.delete(`http://localhost:8070/product/delete/${id}`)
+        .then(response => {
+            toast.info("Product is removed. Please refresh");
+        })
+        .catch(error => {
+            console.error('Error deleting product:', error);
+        });
 
 }
   return (
@@ -64,6 +72,7 @@ const handleDelete=(id) => {
             </Table.Body>)
         }
 
+      </Table>
 <ToastContainer
           position="top-center"
           autoClose={2000}
@@ -76,7 +85,6 @@ const handleDelete=(id) => {
           pauseOnHover
           theme="colored"         
           />     
-      </Table>
     </div>
 
     </div>
