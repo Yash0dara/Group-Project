@@ -13,7 +13,13 @@ import Dashboard from "../dashboard/Dashboard";
 import UploadProduct from "../dashboard/UploadProduct";
 import EditProduct from "../dashboard/EditProduct";
 import ManageProduct from "../dashboard/ManageProduct";
-
+import Card from "../components/card";
+import Choose_payment_method from "../components/choose_payment_method";
+import Received from "../components/received"
+import Salary_cal from "../components/salary_cal"
+import Slp from "../components/slp"
+import viewcards from "../components/viewww";
+import ViewCards from "../components/viewww";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +28,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <Home/>,
       },
       {
         path: "/shop",
@@ -40,11 +46,36 @@ const router = createBrowserRouter([
       {
         path: "/reviews",
         element:<Reviews/>
-      },{
+      },
+      {
         path: "/bookings",
         element: <Bookings />,
-      }
-      // ,
+      },
+      {
+        path: "/card",
+        element: <Card />,
+      },
+      {
+        path: "/choose_payment_method",
+        element: <Choose_payment_method />,
+      },
+      {
+        path: "/received",
+        element: <Received />,
+      },
+      {
+        path: "/salary_cal",
+        element: <Salary_cal/>,
+      },
+      {
+        path: "/slp",
+        element: <Slp />,
+      },
+       {
+         path: "/view_cards",
+       element: <ViewCards/>,
+       }
+      // // ,
       // {
       //   path: "/cart",
       //   element: <Cart/>,

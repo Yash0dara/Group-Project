@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Table } from 'flowbite-react'
+import { Link } from 'react-router-dom';
 
 const Cart = ({product,cart, setCart,handleChange}) => {
   const [price ,setPrice]=useState(0);
@@ -75,6 +76,9 @@ const Cart = ({product,cart, setCart,handleChange}) => {
         </Table.Row>
     </Table.Body>
   </Table>
+  <Link to="/choose_payment_method">
+  <button className='mb-10 mt-10 mr-20 float-right bg-blue-500 text-white py-2 px-4 rounded'> Proceed To Payment</button>
+  </Link>
   </div>
   </div>
  

@@ -6,8 +6,8 @@ import MyFooter from './components/MyFooter'
 import Cart from './shop/Cart'
 import { useState } from 'react'
 import BestProducts from './home/BestProducts'
-
-
+import ViewCards from './components/viewww'
+import Card from './components/card'
 function App() {
 
   const [show,setShow]=useState(true);
@@ -31,7 +31,7 @@ function App() {
     <div className='min-h-screen'> 
     
    
-    <Outlet/>
+ <Outlet/>
     </div>
   
      <MyFooter/>

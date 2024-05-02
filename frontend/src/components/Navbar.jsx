@@ -38,7 +38,8 @@ const navItems=[
     {link: "Workouts" , path:"/workouts"},
     {link: "Shop" , path:"/shop" },
     {link: "Add Product" , path:"/admin/dashboard"},
-    {link: "Reviews" , path:"/reviews"},
+    {link: "Salary" , path:"/salary_cal"},
+    {link: "Recieved" , path:"/received"},
 ]
 
   return (
