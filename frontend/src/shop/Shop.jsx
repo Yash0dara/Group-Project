@@ -16,7 +16,6 @@ const Shop = () =>{
   const [show,setShow] = useState(true);
     const [cart,setCart]=useState(cartFromLocalStorage);
     const [warning,setWarning] = useState(false);
-
   
    //add to cart
     const handleClick = (product) => {
@@ -64,10 +63,12 @@ const handleChange=(product,d)=>{
     return (
         <> 
          
-        <Navbar size={cart.length} setShow={setShow}/>  
+        <Navbar size={cart.length} setShow={setShow}/>
+
         {
              show ? <Allproducts handleClick={handleClick}/>: <Cart cart={cart} setCart={setCart} handleChange={handleChange}/>
         }
+        
          {
           warning && <></>
           
@@ -84,6 +85,8 @@ const handleChange=(product,d)=>{
           pauseOnHover
           theme="colored"         
           />     
+
+        
         </>  
     )
 }

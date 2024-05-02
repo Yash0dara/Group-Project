@@ -6,7 +6,7 @@ import Banner from "../components/Banner";
 const Allproducts = ({handleClick}) => {
 
     const [product,setProduct]=useState([]);
-    
+  
     useEffect(()=>{
         axios.get("http://localhost:8070/product/").then((res)=>{
           setProduct(res.data)
@@ -18,7 +18,9 @@ const Allproducts = ({handleClick}) => {
   return (
    <div>
     <Banner/> 
-    <AllProductCard product={product}  headline="Let's Shop"  handleClick={handleClick} key={product._id} />
+
+    <AllProductCard product={product}  headline="Let's Shop"  handleClick={handleClick} key={product._id} /> 
+    
    </div>
 
   )

@@ -9,7 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const ManageProduct = () => {
     const[allProducts,setAllProducts]= useState([]);
-    
+    //const confirmDelete = window.confirm("Are you sure you want to delete this product?");
+
     useEffect(()=>{
       axios.get("http://localhost:8070/product/").then((res)=>{
         setAllProducts(res.data)
@@ -19,17 +20,21 @@ const ManageProduct = () => {
     
   },[])
 //delete a product
+
 const handleDelete=(id) => {
-  console.log(id);
+  const confirmDelete = window.confirm("Are you sure you want to delete this product?");
+  if (confirmDelete) {
     axios.delete(`http://localhost:8070/product/delete/${id}`)
         .then(response => {
-            toast.info("Product is removed. Please refresh");
+            toast.info("Product is removed");
+            // Refresh the product list after deletion
+            setAllProducts(allProducts.filter(product => product._id !== id));
         })
         .catch(error => {
             console.error('Error deleting product:', error);
         });
-
 }
+};
   return (
     <div className='px-4 my-12'>
         <h2 className='mb-8 text-3xl font-bold'>Product Management. </h2>

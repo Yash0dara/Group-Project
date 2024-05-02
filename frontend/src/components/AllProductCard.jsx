@@ -1,90 +1,115 @@
-
 import React, { useEffect, useState } from "react";
 import { Card } from 'flowbite-react';
 import { Link } from "react-router-dom";
 
-const AllProductCard = ({product,handleClick}) => {
-  
-  return (
-    <div className='mt-28 px-14 lg:px-24'>
-    <h2 className="text-5xl text-center">all</h2>
+import { Button } from "flowbite-react";
 
-<div className="grid gap-12 my-14 lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-3 grid-col-1">
-    {
-        product.map(product=><Card className="max-w-sm" key={product._id}>
-            <Link to ={`/product/${product._id}`}>
-            <img src={product.imageUrl}/>
-            <a href={`http://127.0.0.1:5173/product/${product._id}`}>
-              <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-              {product.productName}
-              </h5>
-              <h4>
-              {product.description}
-              </h4>
-            </a>
-            <div className="mb-5 mt-2.5 flex items-center">
-              <svg
-                className="h-5 w-5 text-yellow-300"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
-              <svg
-                className="h-5 w-5 text-yellow-300"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
-              <svg
-                className="h-5 w-5 text-yellow-300"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
-              <svg
-                className="h-5 w-5 text-yellow-300"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
-              <svg
-                className="h-5 w-5 text-yellow-300"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
-              <span className="ml-3 mr-2 rounded bg-cyan-100 px-2.5 py-0.5 text-xs font-semibold text-cyan-800 dark:bg-cyan-200 dark:text-cyan-800">
-                5.0
-              </span>
-            </div>  
-            </Link>
-            <div className="mb-5 mt-2.5 flex items-center justify-between">
-              <span className="text-xl font-bold text-gray-900 dark:text-white">Rs {product.price}</span>
-              <button onClick={()=>handleClick(product)}
-               className="rounded-lg bg-cyan-700 px-3 py-1.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
-               >
-                Add to cart
-              </button>
-            </div>
-          </Card>)
+const AllProductCard = ({ product, handleClick }) => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const categories = [...new Set(product.map(item => item.productCategory))];
+  const [searchQuery, setSearchQuery] = useState('');
+
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const handleShowAll = () => {
+    setSelectedCategory(null); // Reset selected category to show all products
+  };
+
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // const filteredProducts = selectedCategory
+  //   ? product.filter(item => item.productCategory === selectedCategory)
+  //   : product;
+
+  const filteredProducts = product.filter(item => {
+
+    // Filter by category
+    if (selectedCategory && item.productCategory !== selectedCategory) {
+      return false;
     }
-</div>
 
-</div>
-  )
-}
+    // Filter by search query
+    if (searchQuery && !item.productName.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
 
-export default AllProductCard
-
-
-
+    return true;
+  });
+  return (
+     <div>
+      <div className='mt-28 px-14 lg:px-24'>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            outline
+            gradientDuoTone="greenToBlue"
+            onClick={handleShowAll}
+            active={!selectedCategory}
+          >
+            All Products
+          </Button>
+          {categories.map((category, index) => (
+            <Button
+              key={index}
+              outline
+              gradientDuoTone="greenToBlue"
+              onClick={() => handleCategoryClick(category)}
+              active={selectedCategory === category}
+            >
+              {category}
+            </Button>
+          ))}
+          <div style={{ marginLeft: "auto" }}>
+            <input
+              type="search"
+              name="search"
+              id="search"
+              placeholder='Search for your item'
+              className='py-2 px-2 rounded-s-sm outline-none mr-2'
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+            />
+            <button
+              className='bg-blue-700 px-6 py-2 text-white font-medium hover:bg-black
+              transition-all ease-in duration-200'
+            >
+              Search
+            </button>
+          </div>
+        </div>
+        <div className="grid gap-12 my-14 lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-3 grid-col-1">
+          {filteredProducts.map(product => (
+            <Card className="max-w-sm" key={product._id}>
+              <Link to={`/product/${product._id}`}>
+                <img src={product.imageUrl} alt={product.productName} />
+                <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  {product.productName}
+                </h5>
+                <h4>{product.description}</h4>
+              </Link>
+              <div className="mb-5 mt-2.5 flex items-center">
+                {/* Star rating icons */}
+              </div>
+              <div className="mb-5 mt-2.5 flex items-center justify-between">
+                <span className="text-xl font-bold text-gray-900 dark:text-white">
+                  Rs {product.price}
+                </span>
+                <button
+                  onClick={() => handleClick(product)}
+                  className="rounded-lg bg-cyan-700 px-3 py-1.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+                >
+                  Add to cart
+                </button>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+export default AllProductCard;

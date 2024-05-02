@@ -47,6 +47,7 @@ const productObj ={
     axios.post("http://localhost:8070/product/add", productObj)
     .then(() => {
       alert("Product added!");
+      window.location.reload(); 
     })
     .catch((err) => {
       alert(err);
