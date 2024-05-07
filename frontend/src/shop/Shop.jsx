@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-const cartFromLocalStorage = JSON.parse(localStorage.getItem('theCart') ||'[]');
+const cartFromLocalStorage = JSON.parse(localStorage.getItem('theCart')) || {};
 
 
 const Shop = () =>{

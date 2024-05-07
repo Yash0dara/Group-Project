@@ -91,4 +91,92 @@ router.route("/get/:id").get(async(req,res)=>{
     })
 })
 
+
+router.route("/decrementProductQ").put(async (req, res) => {
+    try {
+      const cart = req.body.cart;
+      console.log(cart);
+      if (!Array.isArray(cart) || cart.length === 0) {
+        return res.status(400).json({ error: 'Invalid cart data' });
+      }
+  
+      for (const item of cart) {
+        const productId = item._id;
+        const amount = item.amount;
+   
+        if (typeof productId !== 'string' || typeof amount !== 'number' || amount <= 0) {
+            return res.status(400).json({ error: 'Invalid cart item data' });
+          }
+
+        const product = await Product.findById(productId);
+  
+        if (product && product.quantity >= amount) {
+          product.quantity -= amount;
+          await product.save();
+        } else {
+          console.log(`Product not found or insufficient quantity for product with ID ${productId}`);
+          return res.status(404).send({ status: 'Product not found or insufficient quantity', error: `Product with ID ${productId} not found or quantity is not sufficient` });
+        }
+      }
+  
+      res.status(200).json({ message: 'Product quantities decremented successfully' });
+    } catch (error) {
+      console.error('Error while decrementing product quantities:', error.message);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+
 module.exports=router;
+
+
+// router.route("/decrementProductQ").put(async (req, res) => {
+//     try {
+//       const cart = req.body.cart;
+  
+//       if (!Array.isArray(cart) || cart.length === 0) {
+//         return res.status(400).json({ error: 'Invalid cart data' });
+//       }
+  
+//       for (const item of cart) {
+//         const productId = item._id;
+//         const amount = item.amount;
+  
+//         if (typeof productId !== 'string' || typeof amount !== 'number' || amount <= 0) {
+//           return res.status(400).json({ error: 'Invalid cart item data' });
+//         }
+  
+//         const product = await Product.findById(productId);
+  
+//         if (!product) {
+//           return res.status(404).json({ error: `Product with ID ${productId} not found` });
+//         }
+  
+//         if (product.quantity < amount) {
+//           return res.status(400).json({ error: `Insufficient quantity for product with ID ${productId}` });
+//         }
+  
+//         product.quantity -= amount;
+//         await product.save();
+//       }
+  
+//       res.status(200).json({ message: 'Product quantities decremented successfully' });
+//     } catch (error) {
+//       console.error('Error while decrementing product quantities:', error.message);
+//       res.status(500).json({ error: 'Internal server error' });
+//     }
+//   });
+
+
+
+
+
+
+
+
+
+
+
+
+
+

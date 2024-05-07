@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import { FaBarsStaggered, FaBlog, FaXmark, FaCartShopping, FaUser } from "react-icons/fa6";
 
 const Navbar = ({ size, setShow }) => {
@@ -28,16 +28,20 @@ const Navbar = ({ size, setShow }) => {
 
     const navItems = [
         { link: "Home", path: "/" },
-        { link: "Bookings", path: "/bookings" },
-        { link: "Workouts", path: "/workouts" },
+        { link: "Bookings", path: "/ScheduleView" },
+        { link: "Workouts", path: "/MyWorkout" },
         { link: "Shop", path: "/shop" },
         { link: "Add Product", path: "/admin/dashboard" },
-        { link: "Reviews", path: "/reviews" },
+        { link: "Reviews", path: "/contactUs" },
+        {link: "A_Reviews" , path: "/admin/dashboard/a_ContactUs"}
     ]
+
+
+    const navigate = useNavigate()
 
     return (
         <header className={`w-full fixed top-0 transition-all duration-500 ${isSticky ? "bg-blue-300 z-50" : "bg-transparent"}`}>
-            <nav className='py-4 lg:px-24'>
+            <nav className='py-4 lg:px-24' >
                 <div className='flex justify-between items-center'>
                     <Link to="/home" className='text-2xl font-bold text-blue-700 flex items-center gap-2'><img src="./img/logo.png" className="w-16 h-auto" alt="Logo" /></Link>
 
@@ -54,11 +58,13 @@ const Navbar = ({ size, setShow }) => {
                         <span>{size}</span>
                     </div>
 
-                    <Link to="/" className='text-2xl text-blue-500'><FaUser /></Link>
+                    <Link to="/profile" className='text-2xl text-blue-500'><FaUser /></Link>
+                    <button className='btn bg-blue-600 text-white py-1 px-3 md:ml-8 rounded' onClick={()=>navigate("/login")}>Login </button>
+
 
                     <div className='flex items-center lg:hidden'>
                         <button onClick={toggleMenu} className='text-black focus:outline-none'>
-                            {isMenuOpen ? <FaXmark className='h-5 w-5 text-black' /> : <FaBarsStaggered className='h-5 w-5 text-black' />}
+                            {isMenuOpen ? <FaXmark className='h-5 w-5 text-black' /> : <FaBarsStaggered className='h-5 w-5 text-black' /> }
                         </button>
                     </div>
                 </div>

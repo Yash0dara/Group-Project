@@ -9,7 +9,7 @@ const AllProductCard = ({ product, handleClick }) => {
   const categories = [...new Set(product.map(item => item.productCategory))];
   const [searchQuery, setSearchQuery] = useState('');
 
-
+//categorizing
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
   };
@@ -17,14 +17,12 @@ const AllProductCard = ({ product, handleClick }) => {
   const handleShowAll = () => {
     setSelectedCategory(null); // Reset selected category to show all products
   };
-
+  
+//search function
   const handleSearchInputChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  // const filteredProducts = selectedCategory
-  //   ? product.filter(item => item.productCategory === selectedCategory)
-  //   : product;
 
   const filteredProducts = product.filter(item => {
 
