@@ -2,13 +2,20 @@ import React from 'react'
 import { useLoaderData, useParams } from 'react-router-dom'
 import { Label, Select, Textarea } from 'flowbite-react'
 import { useState } from 'react'
-
+import axios from "axios";
 
 import { Button, Checkbox, TextInput } from 'flowbite-react';
 
+//toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const EditProduct = () => {
-const id= useParams();
-const {productName,productCategory,price,quantity,description,imageUrl}=useLoaderData();
+  const { id } = useParams();
+
+const { product: initialProduct}= useLoaderData();
+
+console.log('Product:', initialProduct);
 
 const productCategories=[
   "Clothing",
@@ -23,7 +30,8 @@ const  handleCategories = (event) => {
 
 
 // handle updates
-const handleUpdate = (event) =>{
+const handleUpdate = (event,id) =>{
+
   event.preventDefault();
   const form = event.target;
 
@@ -33,6 +41,11 @@ const handleUpdate = (event) =>{
   const quantity = form.quantity.value;
   const description = form.description.value;
   const productCategory = form.productCategory.value;
+  const amount = form.amount.value;
+
+  
+  console.log('Product ID:', id);
+  console.log('Update product object:', {id,productName, imageUrl, price, quantity, description, productCategory, amount});
 
 const updateProductObj ={
   productName,
@@ -40,23 +53,22 @@ const updateProductObj ={
   price,
   quantity,
   description,
-  productCategory
+  productCategory,
+  amount
 }
 
  // console.log(productObj);
 //updates book data
-  fetch(`http://localhost:5000/product/${id}`,{
-      method:"PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updateProductObj)
-
-    }).then(res=>res.json()).then(data=>{
-      console.log(data)
-      alert("Book succesfully edited!");
-
-    })
+axios.put(`http://localhost:8070/product/update/${id}`, updateProductObj)
+.then(response => {
+  console.log(response.data);
+  toast.info("Item successfully updated!");
+  console.log('Product ID:', id);
+})
+.catch(error => {
+  console.error('Error updating item:', error);
+  toast.error("Error updating item. Please try again.");
+});
 
 
 } 
@@ -64,7 +76,7 @@ return (
     <div className='px-4 my-12'>
       <h2 className='mb-8 text-3xl font-bold'>Update Product data</h2>
 
-      <form onSubmit={handleUpdate} className="flex lg:w-[1180px] flex-col gap-4">
+      <form onSubmit={(event) => handleUpdate(event, id)}className="flex lg:w-[1180px] flex-col gap-4">
         
 
 
@@ -84,7 +96,7 @@ return (
                   name='productName'
                   type="text"
                   placeholder="Product Name" 
-                  defaultValue={productName}
+                  defaultValue={initialProduct?.productName}
                   required 
               />
           </div>
@@ -101,50 +113,69 @@ return (
                   name='imageUrl'
                   type="text"
                   placeholder="URL" 
-                  defaultValue={imageUrl}
+                  defaultValue={initialProduct?.imageUrl}
                   required 
               />
           </div>
         </div>  
 
-        {/* SECOND ROW    price and quantity*/}
-       <div className='flex gap-8'>
+      {/* SECOND ROW    price ,quantity and amount*/}
+      <div className='flex gap-8'>
                  
-           {/* Product Price */}
-              <div className='lg:w-1/2'>
-                <div className="mb-2 block">
-                    <Label
-                      htmlFor="price" 
-                      value="price :" 
-                    />
-                </div>
-                      <TextInput 
-                      id="price" 
-                      name='price'
-                      type="text"
-                      placeholder="1000.00 " 
-                      defaultValue={price}
-                      required 
-                  />
-              </div>
-              {/* quantity */}
-              <div className='lg:w-1/2'>
-                <div className="mb-2 block">
-                    <Label
-                      htmlFor="quantity" 
-                      value="quantity :" 
-                    />
-                </div>
-                      <TextInput 
-                      id="quantity" 
-                      name='quantity'
-                      type="text"
-                      placeholder="100" 
-                      defaultValue={quantity}
-                      required 
-                  />
-              </div>
-       </div> 
+                 {/* Product Price */}
+                    <div className='lg:w-2/4'>
+                      <div className="mb-2 block">
+                          <Label
+                            htmlFor="price" 
+                            value="price :" 
+                          />
+                      </div>
+                            <TextInput 
+                            id="price" 
+                            name='price'
+                            type="text"
+                            placeholder="1000.00 " 
+                            defaultValue={initialProduct?.price}
+                            required pattern="\d+(\.\d{1,2})"
+                        />
+                    </div>
+      
+                    {/* quantity */}
+                    <div className='lg:w-1/4'>
+                      <div className="mb-2 block">
+                          <Label
+                            htmlFor="quantity" 
+                            value="quantity :" 
+                          />
+                      </div>
+                            <TextInput 
+                            id="quantity" 
+                            name='quantity'
+                            type="text"
+                            placeholder="100" 
+                            defaultValue={initialProduct?.quantity}
+                            required pattern="\d+"
+                        />
+                    </div>
+      
+                    {/* amount */}
+                    <div className='lg:w-1/4'>
+                      <div className="mb-2 block">
+                          <Label
+                            htmlFor="amount" 
+                            value="amount :" 
+                          />
+                      </div>
+                            <TextInput 
+                            id="amount" 
+                            name='amount'
+                            type="number"
+                            defaultValue={1} 
+                            readOnly={true}
+                        />
+                    </div>
+             </div> 
+      
         {/* THIRD ROW    description and category*/}
         <div className='flex gap-8'>
 
@@ -161,7 +192,7 @@ return (
                   name='description'
                   type="text"
                   placeholder="Leave a description..." 
-                  defaultValue={description}
+                  defaultValue={initialProduct?.description}
                   required rows={4}
               />
 
@@ -185,12 +216,21 @@ return (
 
 
         </div>    
-          
-   
-
-
-
+    
       <Button type="submit">Update Product</Button>
+      
+<ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"         
+          />     
     </form>
     
     </div>

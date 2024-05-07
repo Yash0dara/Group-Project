@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import ProductCard from '../components/ProductCard';
-
+import axios from "axios"
 const BestProducts = ({handleClick}) => {
     const [product, setProduct]=useState([]);
   
 
     useEffect( () => {
-        fetch("http://localhost:5000/all").then(res => res.json()).then(data => setProduct(data.slice(0,5)))
+      axios.get("http://localhost:8070/product/")
+      .then((response) => {
+        // Assuming the data you want to slice is in response.data
+        const slicedData = response.data.slice(0, 5);
+        setProduct(slicedData);
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
     },[])
   return(
     <div>

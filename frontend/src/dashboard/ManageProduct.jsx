@@ -2,22 +2,39 @@ import React, { useEffect, useState } from 'react'
 import { Table } from 'flowbite-react'
 import { Link, json } from 'react-router-dom';
 import Allproducts from '../shop/Allproducts';
+import axios from "axios"
+//toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ManageProduct = () => {
     const[allProducts,setAllProducts]= useState([]);
-    useEffect(()=>{
-        fetch("http://localhost:5000/all").then(res=>res.json()).then(data=> setAllProducts(data));
-    },[])
-//delete a product
-const handleDelete=(id) => {
-    console.log(id);
-    fetch(`http://localhost:5000/product/${id}` ,{
-        method:"DELETE",
-    }).then(res => res.json()).then(data=>{
-        alert("Product is removed")
-    });
+    //const confirmDelete = window.confirm("Are you sure you want to delete this product?");
 
+    useEffect(()=>{
+      axios.get("http://localhost:8070/product/").then((res)=>{
+        setAllProducts(res.data)
+      }).catch((err)=>{
+        alert(err.message)
+      })
+    
+  },[])
+//delete a product
+
+const handleDelete=(id) => {
+  const confirmDelete = window.confirm("Are you sure you want to delete this product?");
+  if (confirmDelete) {
+    axios.delete(`http://localhost:8070/product/delete/${id}`)
+        .then(response => {
+            toast.info("Product is removed");
+            // Refresh the product list after deletion
+            setAllProducts(allProducts.filter(product => product._id !== id));
+        })
+        .catch(error => {
+            console.error('Error deleting product:', error);
+        });
 }
+};
   return (
     <div className='px-4 my-12'>
         <h2 className='mb-8 text-3xl font-bold'>Product Management. </h2>
@@ -61,6 +78,18 @@ const handleDelete=(id) => {
         }
 
       </Table>
+<ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"         
+          />     
     </div>
 
     </div>
