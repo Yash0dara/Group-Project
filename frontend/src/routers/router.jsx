@@ -172,7 +172,7 @@ const router = createBrowserRouter([
       {
         path:"/product/:id",
         element:<SingleProduct/>,
-        loader:({params})=>fetch(`http://localhost:5000/product/${params.id}`)
+        loader:({params})=>fetch(`http://localhost:8070/product/${params.id}`)
       },
       {
         path: "/WorkoutUserView",

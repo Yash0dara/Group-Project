@@ -38,6 +38,10 @@ const SalaryRouter = require("./routes/SalaryS.js")
 const exercisesRouter = require('./routes/exercises.js');
 const workoutRouter=require('./routes/workouts.js');
 
+//bookings-pulasthi
+const bookingRouter = require('./routes/bookings.js');
+
+
 
 
 const URL=process.env.MONGODB_URL;
@@ -69,6 +73,8 @@ app.use("/Salary", SalaryRouter)
 app.use('/exercises', exercisesRouter);
 app.use('/workouts',workoutRouter);
 
+//bookings-pulasthi
+app.use("/bookings", bookingRouter);
 
 
 

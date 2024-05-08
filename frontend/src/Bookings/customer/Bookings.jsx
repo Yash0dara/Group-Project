@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../../components/Navbar';
-
+import {Link} from 'react-router-dom';
 const BookingDetails = () => {
   const [bookings, setBookings] = useState([]);
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -12,7 +12,7 @@ const BookingDetails = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/bookings');
+      const response = await axios.get('http://localhost:8070/bookings');
       setBookings(response.data);
     } catch (error) {
       console.error('Error fetching bookings:', error);
@@ -32,7 +32,7 @@ const BookingDetails = () => {
     try {
       // Allow deleting only if the status is not 'Confirmed'
       if (status !== 'Confirmed') {
-        await axios.delete(`http://localhost:5000/bookings/${id}`);
+        await axios.delete(`http://localhost:8070/bookings/${id}`);
         const updatedBookings = bookings.filter(booking => booking._id !== id);
         setBookings(updatedBookings);
       } else {
@@ -48,10 +48,10 @@ const BookingDetails = () => {
       // Check if the updated status is 'Confirmed'
       if (updatedBooking.status === 'Confirmed') {
         // If so, make a PUT request to update the booking status
-        await axios.put(`http://localhost:5000/bookings/${updatedBooking._id}/status`, { status: 'Confirmed' });
+        await axios.put(`http://localhost:8070/bookings/${updatedBooking._id}/status`, { status: 'Confirmed' });
       } else {
         // If the status is not 'Confirmed', update the booking normally
-        await axios.put(`http://localhost:5000/bookings/${updatedBooking._id}`, updatedBooking);
+        await axios.put(`http://localhost:8070/bookings/${updatedBooking._id}`, updatedBooking);
       }
       
       // Update the state based on the updated booking
@@ -66,55 +66,53 @@ const BookingDetails = () => {
   };
 
   return (
-    <><Navbar />
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <div className="container mx-auto">
-      <h2 className="text-3xl font-semibold text-center bg-gray-500 text-white py-4">Booking Details</h2>
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse bg-white shadow-md rounded-lg">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border border-gray-400 px-4 py-2">Date</th>
-              <th className="border border-gray-400 px-4 py-2">Time Slot</th>
-              <th className="border border-gray-400 px-4 py-2">Workout Type</th>
-              <th className="border border-gray-400 px-4 py-2">Package</th>
-              <th className="border border-gray-400 px-4 py-2">Status</th>
-              <th className="border border-gray-400 px-4 py-2"> </th>
-              <th className="border border-gray-400 px-4 py-2"> </th>
-            </tr>
-          </thead>
-          <tbody>
-            {bookings.map((booking, index) => (
-              <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
-                <td className="border border-gray-400 px-4 py-2">{booking.date}</td>
-                <td className="border border-gray-400 px-4 py-2">{booking.timeSlot}</td>
-                <td className="border border-gray-400 px-4 py-2">{booking.workoutType}</td>
-                <td className="border border-gray-400 px-4 py-2">{booking.packageType}</td>
-                <td className="border border-gray-400 px-4 py-2">{booking.status}</td>
-                <td className="border border-gray-400 px-4 py-2">
-                  <button onClick={() => handleUpdate(booking)} className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Update</button>
-                </td>
-                <td className="border border-gray-400 px-4 py-2">
-                  <button onClick={() => handleDelete(booking._id, booking.status)} className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {selectedBooking && (
-        <UpdateBookingForm booking={selectedBooking} updateBooking={updateBooking} setSelectedBooking={setSelectedBooking} />
-      )}
-      {bookings.length === 0 && (
-        <div className="p-4 text-center">No bookings available.</div>
-      )}
-    </div>
-  </>
-
-);
+    <div>
+      <Navbar />
+      <br></br>
+      <br></br>
+      <div className="container mx-auto mt-10">
+  <h2 className="text-3xl font-semibold text-center bg-gray-800 text-white py-4 rounded-t-lg">Booking Details</h2>
+  <div className="overflow-x-auto">
+    <table className="w-full border-collapse bg-white shadow-md rounded-lg">
+      <thead>
+        <tr className="bg-gray-200">
+          <th className="border border-gray-400 px-4 py-2">Date</th>
+          <th className="border border-gray-400 px-4 py-2">Time Slot</th>
+          <th className="border border-gray-400 px-4 py-2">Workout Type</th>
+          <th className="border border-gray-400 px-4 py-2">Package</th>
+          <th className="border border-gray-400 px-4 py-2">Status</th>
+          <th className="border border-gray-400 px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {bookings.map((booking, index) => (
+          <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
+            <td className="border border-gray-400 px-4 py-2">{booking.date}</td>
+            <td className="border border-gray-400 px-4 py-2">{booking.timeSlot}</td>
+            <td className="border border-gray-400 px-4 py-2">{booking.workoutType}</td>
+            <td className="border border-gray-400 px-4 py-2">{booking.packageType}</td>
+            <td className="border border-gray-400 px-4 py-2">{booking.status}</td>
+            <td className="border border-gray-400 px-4 py-2 flex justify-around">
+              <button onClick={() => handleUpdate(booking)} className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md focus:outline-none focus:bg-blue-600">Update</button>
+              <button onClick={() => handleDelete(booking._id, booking.status)} className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md focus:outline-none focus:bg-red-600">Delete</button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  {selectedBooking && <UpdateBookingForm booking={selectedBooking} updateBooking={updateBooking} setSelectedBooking={setSelectedBooking} />}
+  {bookings.length === 0 && <div className="p-4 text-center">No bookings available.</div>}
+</div>
+<div className="flex justify-center mt-8">
+  <Link to="/scheduleView">
+    <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+      View Schedule
+    </button>
+  </Link>
+</div>
+</div>
+  );
 };
 
 const UpdateBookingForm = ({ booking, updateBooking, setSelectedBooking }) => {
@@ -178,6 +176,7 @@ const UpdateBookingForm = ({ booking, updateBooking, setSelectedBooking }) => {
         </form>
       </div>
     </div>
+    
  
   );
 };

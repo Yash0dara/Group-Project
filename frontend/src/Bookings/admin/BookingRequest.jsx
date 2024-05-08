@@ -12,7 +12,7 @@ const BookingRequest = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/bookings');
+      const response = await axios.get('http://localhost:8070/bookings');
       setBookings(response.data);
     } catch (error) {
       console.error('Error fetching bookings:', error);
@@ -21,7 +21,7 @@ const BookingRequest = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/bookings/${id}`);
+      await axios.delete(`http://localhost:8070/bookings/${id}`);
       setBookings(bookings.filter(booking => booking._id !== id));
     } catch (error) {
       console.error('Error deleting booking:', error);
@@ -30,7 +30,7 @@ const BookingRequest = () => {
 
   const approveBooking = async (id) => {
     try {
-      const response = await axios.put(`http://localhost:5000/bookings/approve/${id}`);
+      const response = await axios.put(`http://localhost:8070/bookings/approve/${id}`);
       if (response.status === 200) {
         // Update the status locally
         setBookings(bookings.map(booking =>
