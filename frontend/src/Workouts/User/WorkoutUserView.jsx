@@ -32,7 +32,6 @@ function WorkoutUserView() {
       return;
     }
     
-  
     try {
       await axios.delete(`http://localhost:8070/workouts/${id}`);
       // After deleting, update the list of workouts
@@ -42,17 +41,32 @@ function WorkoutUserView() {
       setError('Error deleting workout. Please try again.');
     }
   };
+
   const handleStartWorkout = async (id) => {
     console.log("Workout ID:", id); // Log the workout ID
     try {
-      const response = await axios.get(`http://localhost:8070/workouts/${id}`,{ status: 'ongoing' });
+      // Calculate total calories for the workout
+      const workout = workouts.find(workout => workout._id === id);
+      const totalCalories = calculateOverallCalories(workout.exercises);
+  
+      // Send a PUT request to update the workout status to "ongoing" and update total calories
+      await axios.put(`http://localhost:8070/workouts/ongoing/${id}`, { totalCalories });
+  
+      // Update the local state or UI accordingly
+      // For example, you can display a modal or navigate to a new page to start the workout
+      setShowModal(true);
+  
+      // Optionally, you can fetch the updated workout data if needed
+      const response = await axios.get(`http://localhost:8070/workouts/${id}`);
       setSelectedWorkout(response.data);
-      setShowModal(true); // Display modal or navigate to a new page to start the workout
     } catch (error) {
       console.error('Error starting workout:', error);
       setError('Error starting workout. Please try again.');
     }
   };
+  
+  
+
   const handleCompleteExercise = async (workoutId, exerciseId) => {
     try {
       await axios.put(`http://localhost:8070/workouts/${workoutId}/exercises/${exerciseId}/complete`);
@@ -68,13 +82,16 @@ function WorkoutUserView() {
     try {
       await axios.put(`http://localhost:8070/workouts/complete/${selectedWorkout._id}`);
       // Update completed workouts state
+      
       setCompletedWorkouts([...completedWorkouts, selectedWorkout]);
       setSelectedWorkout(null);
     } catch (error) {
       console.error('Error completing workout:', error);
       setError('Error completing workout. Please try again.');
     }
+    
   };
+
   // Function to calculate overall calories for a workout
   const calculateOverallCalories = (exercises) => {
     let totalCalories = 0;
@@ -88,134 +105,9 @@ function WorkoutUserView() {
   const filteredWorkouts = workouts.filter(workout =>
     workout.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
-
-  // CSS Styles
-  const styles = `
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-    }
-
-    .search-container {
-      margin-bottom: 20px;
-    }
-
-    .search-input {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-
-    .workout-list {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap; /* Added to wrap workouts to the next row */
-
-    }
-
-    .workout-item {
-      margin-bottom: 20px;
-      width: 30%;
-      display: flex;
-    }
-
-    .workout-card {
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      flex: 1; /* Distribute remaining space equally */
-      display: flex;
-      flex-direction: column; /* Ensure equal height for each card */
-    }
-
-    .workout-card-body {
-      padding: 20px;
-    }
-
-   
-    
-    .workout-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .workout-description {
-      font-size: 16px;
-      color: #555;
-      margin-bottom: 10px;
-    }
-
-    .workout-exercises {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .exercise-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .exercise-item {
-      margin-bottom: 10px;
-    }
-
-    .exercise-card {
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    .exercise-card-body {
-      padding: 20px;
-    }
-
-    .exercise-title {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .exercise-description {
-      font-size: 14px;
-      color: #555;
-      margin-bottom: 10px;
-    }
-
-    .exercise-reps {
-      font-size: 14px;
-      color: #555;
-    }
-
-    .add-workout-button {
-      margin-top: 20px;
-    }
-
-    .view-exercises-button {
-      background-color: #524f4e;
-      border-color: #524f4e;
-    }
-
-    .view-exercises-button:hover {
-      background-color: #2e2b2b;
-      border-color: #2e2b2b;
-    }
-  `;
-
-  // Create the style tag
-  const styleTag = document.createElement('style');
-  styleTag.type = 'text/css';
-  styleTag.appendChild(document.createTextNode(styles));
-  document.head.appendChild(styleTag);
 
   return (
-    <div className='mt-10'>
+    <div className='mt-10' style={{ backgroundImage: "url('https://wallpapercave.com/wp/wp10555921.jpg')" }}>
       <Navbar/>
       <div className="container">
         <h2 className="text-2xl font-bold mb-4">Workout List</h2>
@@ -232,36 +124,43 @@ function WorkoutUserView() {
         </div>
         <div className="workout-list">
           {filteredWorkouts.map(workout => (
-            <div key={workout._id} className="workout-item">
-              <div className="workout-card">
+            <div key={workout._id} className="workout-item" style={{ width: 'calc(50% - 20px)', float: 'left', marginRight: '20px' }}>
+              <div className="workout-card" style={{ border: '1px solid #ccc', borderRadius: '4px', background: 'white' }}>
                 <div className="workout-card-body">
                   <h5 className="workout-title">{workout.name}</h5>
                   <p className="workout-description">{workout.description}</p>
-                  <p className="workout-exercises">Exercises:</p>
-                  <ul className="exercise-list">
-                    {workout.exercises.map(exercise => (
-                      <li key={exercise._id} className={`exercise-item ${completedExercises.includes(exercise._id) ? 'completed' : ''}`}>
-                        <div className="exercise-card">
-                          <div className="exercise-card-body">
-                            <h5 className="exercise-title">{exercise.name}</h5>
-                            <p className="exercise-description">{exercise.description}</p>
-                            <p className="exercise-reps">Repetitions: {exercise.reps}</p>
-                            <p className="exercise-calories">Approx. Calories: {exercise.approximateCalories}</p>
-                            <button onClick={() => handleCompleteExercise(workout._id, exercise._id)}>Complete</button>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="workout-calories" style={{ color: 'green', marginTop: 'auto' }}>Overall Calories: {calculateOverallCalories(workout.exercises)}</p>
+                  <p className="workout-calories">Overall Calories: {calculateOverallCalories(workout.exercises)}</p>
                   <button onClick={() => handleStartWorkout(workout._id)}>Start</button>
                 </div>
+                {selectedWorkout && selectedWorkout._id === workout._id && (
+                  <div className="workout-card-body">
+                    <h5>Exercises:</h5>
+                    <ul className="exercise-list">
+                      {workout.exercises.map((exercise,index) => (
+                        <li key={exercise._id} className={"exercise-item"}>
+                          <div className="exercise-card">
+                            <div className="exercise-card-body">
+                              <h5 className="exercise-title">{exercise.name}</h5>
+                              <h5 className="exercise-title">{index + 1}. {exercise.name}</h5>
+                              <p className="exercise-reps">Repetitions: {exercise.reps}</p>
+                              <p className="exercise-calories">Calories: {exercise.approximateCalories}</p>
+                              <a href={exercise.videoUrl} className="btn btn-primary" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: 'red' }}>Watch Video</a>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                    <button onClick={handleCompleteWorkout}>Complete Workout</button>
+                  </div>
+                )}
               </div>
             </div>
           ))}
         </div>
+        <Link to="/MyWorkout">
+          <button className="btn btn-primary">My Workout</button>
+        </Link>
       </div>
-      
     </div>
   );
 }
