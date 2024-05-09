@@ -18,12 +18,13 @@ function MyWorkout() {
         console.error('Error fetching ongoing workouts:', error);
       });
 
-    // Fetch completed workouts and calculate total calories burned
+    // Fetch completed workouts
     axios.get('http://localhost:8070/workouts?status=completed')
       .then(response => {
         setCompletedWorkouts(response.data);
-        const totalCalories = response.data.reduce((total, workout) => total + workout.totalCalories, 0);
-        setTotalCaloriesBurned(totalCalories);
+        // Calculate total calories burned by all completed workouts
+        const totalCaloriesBurned = response.data.reduce((total, workout) => total + workout.totalCalories, 0);
+        setTotalCaloriesBurned(totalCaloriesBurned);
       })
       .catch(error => {
         console.error('Error fetching completed workouts:', error);
@@ -31,44 +32,58 @@ function MyWorkout() {
   }, []);
 
   return (
-    <div >
+    <div style={{ backgroundImage: "url('https://wallpapercave.com/wp/wp10555921.jpg')" }}>
       <Navbar />
-      {/* <br></br>
-      <br></br>
-      <br></br>
-      <br></br> */}
+      <br />
+      <br />
+      <div className="container mx-auto px-4" >
+        <h2 className="text-2xl font-semibold mb-4">Ongoing Workouts</h2>
+        <div className="grid grid-cols-3 gap-4">
+          {ongoingWorkouts.map(workout => (
+            <div key={workout._id} className="border rounded-lg p-4" style={{ backgroundColor: 'white' }}>
+              <h3 className="text-lg font-semibold mb-2">{workout.name}</h3>
+              <p className="text-sm mb-2">{workout.description}</p>
+              <ul className="text-sm">
+                {workout.exercises.map(exercise => (
+                  <li key={exercise._id}>
+                    <p className="mb-1">{exercise.name}</p>
+                    <p className="mb-1">Repetitions: {exercise.reps}</p>
+                    <p className="mb-1">Calories: {exercise.approximateCalories}</p>
+                    <a href={exercise.videoUrl} className="btn btn-primary" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: 'red' }}>Watch Video</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
 
-      <h2>Ongoing Workouts</h2>
-      <ul>
-        {ongoingWorkouts.map(workout => (
-          <li key={workout._id}>{workout.name}</li>
-        ))}
-      </ul>
+      <div className="container mx-auto px-4 mt-8">
+        <h2 className="text-2xl font-semibold mb-4">Completed Workouts</h2>
+        <table className="table-auto w-full" style={{ backgroundColor: 'white' }}>
+          <thead>
+            <tr>
+              <th className="px-4 py-2">Name</th>
+              <th className="px-4 py-2">Completed At</th>
+            </tr>
+          </thead>
+          <tbody>
+            {completedWorkouts.map(workout => (
+              <tr key={workout._id} className="border">
+                <td className="border px-4 py-2">{workout.name}</td>
+                <td className="border px-4 py-2">{new Date(workout.completedAt).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      <h2>Completed Workouts</h2>
-      <ul>
-        {completedWorkouts.map(workout => (
-          <li key={workout._id}>{workout.name}</li>
-        ))}
-      </ul>
-
-      <h2>Total Calories Burned: {totalCaloriesBurned}</h2>
-
-      {/* Button to navigate to MyUserView */}
-      <Link to="/WorkoutUserView">
-        <button style={{
-          backgroundColor: '#4CAF50',
-          border: 'none',
-          color: 'white',
-          padding: '15px 32px',
-          textAlign: 'center',
-          textDecoration: 'none',
-          display: 'inline-block',
-          fontSize: '16px',
-          margin: '4px 2px',
-          cursor: 'pointer',
-        }}>Go to My User View</button>
-      </Link>
+        {/* Button to navigate to MyUserView */}
+        <div className="mt-4">
+          <Link to="/WorkoutUserView">
+            <button className="btn btn-primary">Go to My User View</button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
