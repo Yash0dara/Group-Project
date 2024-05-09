@@ -72,47 +72,58 @@ const MakeBooking = () => {
 
   return (
     <>
-    <Navbar/>
-    <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-semibold mb-4">Make Booking</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      <form id="booking-details" onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-1">Date:</label>
-          <input type="date" value={date} min={new Date().toISOString().split('T')[0]} onChange={(e) => setDate(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
+      <Navbar />
+        <br></br>
+        <br />
+        <br />
+        <br />
+        <br />
+        <div style={{ backgroundImage: "url('https://as1.ftcdn.net/v2/jpg/05/56/97/36/1000_F_556973653_oZTsLKGHnIZ4v3OxqWqdWTbCXsKmavZv.jpg')", backgroundSize: "cover", backgroundPosition: "center", minHeight: "100vh" }}>
+        <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-md">
+          <h2 className="text-2xl font-semibold mb-4">Make Booking</h2>
+          {error && <p className="text-red-500">{error}</p>}
+          <form id="booking-details" onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block mb-1">Date:</label>
+              <input type="date" value={date} min={new Date().toISOString().split('T')[0]} onChange={(e) => setDate(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
+            </div>
+            <div>
+              <label className="block mb-1">Time Slot:</label>
+              <select value={timeSlot} onChange={(e) => setTimeSlot(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                <option value="">Select Time Slot</option>
+                {timeSlots.map((slot, index) => (
+                  <option key={index} value={slot}>{slot}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block mb-1">Workout Type:</label>
+              <select value={workoutType} onChange={(e) => setWorkoutType(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                <option value="">Select Workout Type</option>
+                {workoutTypes.map((type, index) => (
+                  <option key={index} value={type}>{type}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block mb-1">Package:</label>
+              <select value={packageType} onChange={(e) => setPackageType(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                <option value="">Select Package</option>
+                {packages.map((pkg, index) => (
+                  <option key={index} value={pkg}>{pkg}</option>
+                ))}
+              </select>
+            </div>
+            <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300">Book Now</button>
+          </form>
         </div>
-        <div>
-          <label className="block mb-1">Time Slot:</label>
-          <select value={timeSlot} onChange={(e) => setTimeSlot(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-            <option value="">Select Time Slot</option>
-            {timeSlots.map((slot, index) => (
-              <option key={index} value={slot}>{slot}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block mb-1">Workout Type:</label>
-          <select value={workoutType} onChange={(e) => setWorkoutType(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-            <option value="">Select Workout Type</option>
-            {workoutTypes.map((type, index) => (
-              <option key={index} value={type}>{type}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block mb-1">Package:</label>
-          <select value={packageType} onChange={(e) => setPackageType(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-            <option value="">Select Package</option>
-            {packages.map((pkg, index) => (
-              <option key={index} value={pkg}>{pkg}</option>
-            ))}
-          </select>
-        </div>
-        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300">Book Now</button>
-      </form>
-    </div>
+      </div>
     </>
   );
+  
+  
+  
+  
 };
 
 export default MakeBooking;

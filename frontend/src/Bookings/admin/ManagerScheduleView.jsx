@@ -19,20 +19,19 @@ function ManagerScheduleView() {
         time: booking.timeSlot,
         date: new Date(booking.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }),
         day: new Date(booking.date).toLocaleDateString('en-US', { weekday: 'long' }),
-        // You may need to adjust this logic based on your data structure
-        name: booking.workoutType // Assuming 'name' is a field in your booking object
+        workoutType: booking.workoutType // Add workoutType to the data structure
       }));
       // Group bookings by time slot
       const groupedTimeSlots = timeSlots.reduce((acc, booking) => {
         acc[booking.time] = acc[booking.time] || {};
         acc[booking.time][booking.day] = acc[booking.time][booking.day] || [];
-        acc[booking.time][booking.day].push(booking.date);
+        acc[booking.time][booking.day].push(booking);
         return acc;
       }, {});
       // Sort bookings within each day in ascending order
       Object.values(groupedTimeSlots).forEach(day => {
         Object.keys(day).forEach(slot => {
-          day[slot] = day[slot].sort((a, b) => new Date(a) - new Date(b));
+          day[slot] = day[slot].sort((a, b) => new Date(a.date) - new Date(b.date));
         });
       });
       setAvailableTimeSlots(Object.entries(groupedTimeSlots));
@@ -42,7 +41,7 @@ function ManagerScheduleView() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8" style={{ backgroundImage: "url('your-background-image-url-here')", backgroundSize: "cover", backgroundPosition: "center" }}>
       <h1 className="text-3xl font-bold mb-8">Booking Schedule</h1>
       <div className="overflow-x-auto">
         <table className="w-full table-auto">
@@ -66,9 +65,16 @@ function ManagerScheduleView() {
                 {/* Days and bookings */}
                 {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
                   <td key={day} className={`border px-4 py-2 ${bookings && bookings[day] && bookings[day].length > 0 ? 'bg-blue-200' : 'bg-white'}`}>
-                    {bookings && bookings[day] ? bookings[day].map((date, index) => (
-                      <div key={index} className="text-sm">{date}</div>
-                    )) : ''}
+                    {bookings && bookings[day] ? (
+                      <div>
+                        {bookings[day].map((booking, index) => (
+                          <div key={index} className="text-sm">
+                            <div>{booking.date}</div>
+                            <div>{booking.workoutType}</div> {/* Display workoutType */}
+                          </div>
+                        ))}
+                      </div>
+                    ) : ''}
                   </td>
                 ))}
               </tr>

@@ -68,9 +68,11 @@ const BookingDetails = () => {
   return (
     <div>
       <Navbar />
-      <br></br>
-      <br></br>
-      <div className="container mx-auto mt-10">
+      <br/>
+<br/>
+<div>
+      <div className="h-screen bg-gradient-to-r from-cyan-500 to-blue-500">
+      <div className="container mx-auto mt-10 mb-10">
   <h2 className="text-3xl font-semibold text-center bg-gray-800 text-white py-4 rounded-t-lg">Booking Details</h2>
   <div className="overflow-x-auto">
     <table className="w-full border-collapse bg-white shadow-md rounded-lg">
@@ -112,7 +114,8 @@ const BookingDetails = () => {
   </Link>
 </div>
 </div>
-  );
+</div>
+</div>  );
 };
 
 const UpdateBookingForm = ({ booking, updateBooking, setSelectedBooking }) => {
