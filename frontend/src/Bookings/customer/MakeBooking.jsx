@@ -38,7 +38,7 @@ const MakeBooking = () => {
 
     try {
       // Send booking data to the backend
-      await axios.post('http://localhost:5000/bookings', bookingData);
+      await axios.post('http://localhost:8070/bookings', bookingData);
 
       // Generate PDF
       generatePDF();

@@ -55,8 +55,8 @@ const productObj ={
 
 } 
 return (
-    <div className='px-4 my-12'>
-      <h2 className='mb-8 text-3xl font-bold'>Upload Product</h2>
+    <div className='ml-10 px-4 my-12'  style={{ backgroundColor: '#e5f2ff' }}>
+      <h2 className='ml-10 mb-8 text-3xl font-bold'>Upload Product</h2>
 
       <form method="post" onSubmit={handleSubmit} className="flex lg:w-[1180px] flex-col gap-4">
         
@@ -120,6 +120,7 @@ return (
                             name='price'
                             type="float"
                             placeholder="1000.00 "  
+                            step="0.01"
                             required pattern="\d+(\.\d{1,2})"
                             onChange={(event)=>{
                               setPrice(event.target.value);

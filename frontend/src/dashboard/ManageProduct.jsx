@@ -9,7 +9,18 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const ManageProduct = () => {
     const[allProducts,setAllProducts]= useState([]);
-    //const confirmDelete = window.confirm("Are you sure you want to delete this product?");
+    //alert for quantity change
+    useEffect(() => {
+      axios.get("http://localhost:8070/product/")
+        .then((res) => {
+          setAllProducts(res.data);
+          checkProductQuantity(res.data);
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    }, []);
+  
 
     useEffect(()=>{
       axios.get("http://localhost:8070/product/").then((res)=>{
@@ -19,6 +30,14 @@ const ManageProduct = () => {
       })
     
   },[])
+
+  const checkProductQuantity = (products) => {
+    products.forEach(product => {
+      if (product.quantity < 5) {
+        toast.warn(`Product "${product.productName}" has quantity less than 5.`);
+      }
+    });
+  };
 //delete a product
 
 const handleDelete=(id) => {
@@ -36,8 +55,8 @@ const handleDelete=(id) => {
 }
 };
   return (
-    <div className='px-4 my-12'>
-        <h2 className='mb-8 text-3xl font-bold'>Product Management. </h2>
+    <div className=' ml-10 px-4 my-12' style={{ backgroundColor: '#e5f2ff' }}>
+        <h2 className='ml-10 mb-8 text-3xl font-bold'>Product Management. </h2>
         {/* table fpr product detailing */}
         <div className="overflow-x-auto">
       <Table className='lg:w-[1180px]'>
@@ -46,6 +65,7 @@ const handleDelete=(id) => {
           <Table.HeadCell>Product name</Table.HeadCell>
           <Table.HeadCell>Price</Table.HeadCell>
           <Table.HeadCell>Category</Table.HeadCell>
+          <Table.HeadCell>Quantity</Table.HeadCell>
           <Table.HeadCell>Description</Table.HeadCell>
           <Table.HeadCell>
             <span>
@@ -65,6 +85,7 @@ const handleDelete=(id) => {
             <Table.Cell>{product.productName}</Table.Cell>
             <Table.Cell>{product.price}</Table.Cell>
             <Table.Cell>{product.productCategory} </Table.Cell>
+            <Table.Cell>{product.quantity} </Table.Cell>
             <Table.Cell>{product.description}</Table.Cell>
             <Table.Cell>
               <Link className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 mr-4"
@@ -78,9 +99,9 @@ const handleDelete=(id) => {
         }
 
       </Table>
-<ToastContainer
-          position="top-center"
-          autoClose={2000}
+      <ToastContainer
+          position="top-right"
+          autoClose={2500}
           hideProgressBar
           newestOnTop={false}
           closeOnClick
@@ -88,8 +109,9 @@ const handleDelete=(id) => {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme="colored"         
-          />     
+          theme="colored"
+
+    /> 
     </div>
 
     </div>

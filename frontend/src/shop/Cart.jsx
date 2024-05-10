@@ -27,10 +27,38 @@ const Cart = ({cart, setCart,handleChange}) => {
     const arr= cart.filter((product)=> product._id !== id)
     setCart(arr);
   }
+  
+  //to send data to the order data
+  const placeOrder = async () => {
+     try {
+    const cartData = JSON.parse(localStorage.getItem('theCart'));
+    if (!cartData || !Array.isArray(cartData)) {
+      console.error('Invalid cart data:', cartData);
+      return;
+    }
 
+    const orderData = cartData.map(product => ({
+      productID: product._id,
+      orderName: product.productName,
+      totalPrice: product.price * product.amount,
+      amount: product.amount
+    }));
+
+    console.log('Order data:', orderData);
+
+    const response = await axios.post('http://localhost:8070/order/add', orderData);
+    console.log('Order response:', response.data);
+
+    toast.success('Order placed successfully');
+  } catch (error) {
+    console.error('Error placing order:', error);
+    toast.error('Failed to place order');
+  }
+};
   useEffect(()=>{
     handlePrice();
   })
+
 
   const handleConfirmPayment = async () => {
     try {
@@ -39,11 +67,12 @@ const Cart = ({cart, setCart,handleChange}) => {
 
       setCart([]);
       console.log('Cart cleared successfully');
-
+ placeOrder();
 
     } catch (error) {
       console.error('Error confirming payment:', error.message);
     }
+   
   };
   const confirmPayment = async () => {
     const cartData = JSON.parse(localStorage.getItem('theCart'));
@@ -72,13 +101,14 @@ const Cart = ({cart, setCart,handleChange}) => {
       }
     }
     checkProductQuantity(cart);
+;
   };
     const checkProductQuantity = async () => {
       for (const item of cart) {
         const productId = item._id;
         const amount = item.amount;
   
-        const product = await axios.get(`http://localhost:8070/product/${productId}`);
+        const product = await axios.get(`http://localhost:8070/product/get/${productId}`);
   
         if (product.quantity < amount) {
            toast.info(`Insufficient quantity for product: ${product.productName}`, {
@@ -149,9 +179,10 @@ const Cart = ({cart, setCart,handleChange}) => {
           /> 
     </Table>
     <Link to="/choose_payment_method">
-      <button className="mb-10 mt-10 mr-20 float-right bg-blue-500 text-white py-2 px-4 rounded">Proceed To Payment</button>
+      <button className="mb-10 mt-10 mr-20 float-right bg-blue-500 text-white py-2 px-4 rounded"  >Are you sure?</button>
     </Link>
       <button className="mb-10 mt-10 mr-20 float-right bg-blue-500 text-white py-2 px-4 rounded" onClick={confirmPayment}>Confirm payment</button>
+
 
   </div>
 </div>

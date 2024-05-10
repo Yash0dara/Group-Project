@@ -73,8 +73,8 @@ axios.put(`http://localhost:8070/product/update/${id}`, updateProductObj)
 
 } 
 return (
-    <div className='px-4 my-12'>
-      <h2 className='mb-8 text-3xl font-bold'>Update Product data</h2>
+    <div className='ml-10 px-4 my-12' style={{ backgroundColor: '#e5f2ff' }}>
+      <h2 className='ml-10 mb-8 text-3xl font-bold'>Update Product data</h2>
 
       <form onSubmit={(event) => handleUpdate(event, id)}className="flex lg:w-[1180px] flex-col gap-4">
         
@@ -84,7 +84,7 @@ return (
         <div className='flex gap-8'>
 
           {/* Product name */}
-          <div className='lg:w-1/2'>
+          <div className='lg:w-1/2' >
             <div className="mb-2 block">
                 <Label
                   htmlFor="productName" 
@@ -134,6 +134,7 @@ return (
                             id="price" 
                             name='price'
                             type="text"
+                            step="0.01"
                             placeholder="1000.00 " 
                             defaultValue={initialProduct?.price}
                             required pattern="\d+(\.\d{1,2})"

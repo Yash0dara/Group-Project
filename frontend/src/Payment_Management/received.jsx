@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 const ReceivedSlips = () => {
   const [receivedSlips, setReceivedSlips] = useState([
     {
@@ -66,7 +65,6 @@ const ReceivedSlips = () => {
   };
 
   const viewSlip = (slip) => {
-    // Implement logic to view slip details
     console.log("View slip details:", slip);
   };
 
@@ -77,17 +75,23 @@ const ReceivedSlips = () => {
   };
 
   return (
-    <>
     
-    <div className="flex justify-center">
-      <div className="max-w-[1300px] w-full">
+    <div className="contact_form mt-5 flex items-center justify-center bg-cover"
+      style={{
+        minHeight: '100vh',
+        minWidth: '180vh',
+        backgroundImage: `url('https://images.hdqwalls.com/wallpapers/dwayne-johnson-in-gym-4k-kf.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      
+      <div className="max-w-[400px] w-full">
         {receivedSlips.map((slip) => (
           <div
             key={slip.id}
             className="bg-white rounded-lg shadow-md mb-4 p-4"
           >
-            <dr></dr>
-            <dr></dr>
             <div className="mb-2">
               <span className="text-gray-600 font-semibold">Slip Number: </span>
               <span>{slip.slipNumber}</span>
@@ -106,37 +110,37 @@ const ReceivedSlips = () => {
             </div>
             <button
               onClick={() => acceptSlip(slip.id)}
-              className="bg-[#3350df] text-white font-bold py-2 px-4 rounded mr-2"
+              className="bg-blue-500 text-white font-bold py-2 px-4 rounded mr-2"
             >
               Accept
             </button>
             <button
               onClick={() => rejectSlip(slip.id)}
-              className="bg-[#df3339] text-white font-bold py-2 px-4 rounded mr-2"
+              className="bg-red-500 text-white font-bold py-2 px-4 rounded mr-2"
             >
               Reject
             </button>
             <button
               onClick={() => viewSlip(slip)}
-              className="bg-[#3df5f5] text-white font-bold py-2 px-4 rounded"
+              className="bg-green-500 text-white font-bold py-2 px-4 rounded"
             >
               View Slip
             </button>
-          </div>  
+          </div>
         ))}
         <button
           onClick={getReport}
-          className="bg-[#4caf50] text-white font-bold py-2 px-4 rounded"
+          className="bg-green-500 text-white font-bold py-2 px-4 rounded"
         >
           Get The Report
         </button>
         <div className="mt-4">
-          <p className="text-gray-700 font-semibold">Accepted Slips: {report.accepted}</p>
-          <p className="text-gray-700 font-semibold">Rejected Slips: {report.rejected}</p>
-        </div>
+  <p className="text-white font-semibold">Accepted Slips: {report.accepted}</p>
+  <p className="text-white font-semibold">Rejected Slips: {report.rejected}</p>
+</div>
+
       </div>
     </div>
-    </>
   );
 };
 

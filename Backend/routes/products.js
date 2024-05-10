@@ -107,7 +107,8 @@ router.route("/decrementProductQ").put(async (req, res) => {
         if (typeof productId !== 'string' || typeof amount !== 'number' || amount <= 0) {
             return res.status(400).json({ error: 'Invalid cart item data' });
           }
-
+        console.log(productId);
+        console.log(amount);
         const product = await Product.findById(productId);
   
         if (product && product.quantity >= amount) {
@@ -120,6 +121,7 @@ router.route("/decrementProductQ").put(async (req, res) => {
       }
   
       res.status(200).json({ message: 'Product quantities decremented successfully' });
+      
     } catch (error) {
       console.error('Error while decrementing product quantities:', error.message);
       res.status(500).json({ error: 'Internal server error' });

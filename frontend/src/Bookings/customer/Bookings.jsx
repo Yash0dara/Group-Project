@@ -12,7 +12,7 @@ const BookingDetails = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/bookings');
+      const response = await axios.get('http://localhost:8070/bookings');
       setBookings(response.data);
     } catch (error) {
       console.error('Error fetching bookings:', error);
@@ -32,7 +32,7 @@ const BookingDetails = () => {
     try {
       // Allow deleting only if the status is not 'Confirmed'
       if (status !== 'Confirmed') {
-        await axios.delete(`http://localhost:5000/bookings/${id}`);
+        await axios.delete(`http://localhost:8070/bookings/${id}`);
         const updatedBookings = bookings.filter(booking => booking._id !== id);
         setBookings(updatedBookings);
       } else {
@@ -48,10 +48,10 @@ const BookingDetails = () => {
       // Check if the updated status is 'Confirmed'
       if (updatedBooking.status === 'Confirmed') {
         // If so, make a PUT request to update the booking status
-        await axios.put(`http://localhost:5000/bookings/${updatedBooking._id}/status`, { status: 'Confirmed' });
+        await axios.put(`http://localhost:8070/bookings/${updatedBooking._id}/status`, { status: 'Confirmed' });
       } else {
         // If the status is not 'Confirmed', update the booking normally
-        await axios.put(`http://localhost:5000/bookings/${updatedBooking._id}`, updatedBooking);
+        await axios.put(`http://localhost:8070/bookings/${updatedBooking._id}`, updatedBooking);
       }
       
       // Update the state based on the updated booking

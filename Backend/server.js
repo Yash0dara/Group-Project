@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 
 //products-yashodara
 const productRouter=require("./routes/products.js");
+const orderRouter = require("./routes/orders.js");
 
 //reviews-samadhi
 const Workout_reviewRouter = require("./routes/Workout_reviews.js");
@@ -38,6 +39,7 @@ const SalaryRouter = require("./routes/SalaryS.js")
 const exercisesRouter = require('./routes/exercises.js');
 const workoutRouter=require('./routes/workouts.js');
 
+//bookings-pula
 
 
 const URL=process.env.MONGODB_URL;
@@ -55,6 +57,7 @@ app.use('/api', router)
 
 //product-yashodara
 app.use("/product",productRouter);
+app.use("/order",orderRouter);
 
 //reviews-samadhi
 app.use("/Workout_review", Workout_reviewRouter);
@@ -68,9 +71,6 @@ app.use("/Salary", SalaryRouter)
 //workouts-limeth
 app.use('/exercises', exercisesRouter);
 app.use('/workouts',workoutRouter);
-
-
-
 
 
 /** Start server only when we have a valid connection */

@@ -58,7 +58,7 @@ function BMI() {
     window.location.reload()
   }
 
-/*weight convertor*/
+/weight convertor/
 
   let calcWei = (event) => {
     //prevent submitting
@@ -73,7 +73,7 @@ function BMI() {
     }
   }
 
-  /*Height convertor*/
+  /Height convertor/
 
   let calcHei = (event) => {
     //prevent submitting

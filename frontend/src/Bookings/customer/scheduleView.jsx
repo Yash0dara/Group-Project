@@ -13,7 +13,7 @@ function ScheduleView() {
 
   const fetchBookings = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/bookings/');
+      const response = await axios.get('http://localhost:8070/bookings/');
       setBookings(response.data);
     } catch (error) {
       setError('Error fetching bookings');

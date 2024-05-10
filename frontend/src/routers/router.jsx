@@ -57,6 +57,7 @@ import Admin from "../dashboard/Admin";
 import Profile from "../components/Profile";
 import Recovery from "../components/Recovery";
 import Reset from "../components/Reset";
+import Order from "../shop/Order";
 
 const router = createBrowserRouter([
   {
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <Product />,
+      },
+      {
+        path: "/order",
+        element: <Order/>,
       },
       {
         path: "/reviewBoxes",
@@ -172,7 +177,7 @@ const router = createBrowserRouter([
       {
         path:"/product/:id",
         element:<SingleProduct/>,
-        loader:({params})=>fetch(`http://localhost:5000/product/${params.id}`)
+        loader:({params})=>fetch(`http://localhost:8070/product/${params.id}`)
       },
       {
         path: "/WorkoutUserView",

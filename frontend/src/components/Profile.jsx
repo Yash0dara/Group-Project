@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 
 import styles from '../styles/Username.module.css';
 import extend from '../styles/Profile.module.css'
+import { Button } from 'flowbite-react';
 
 export default function Profile() {
 
@@ -81,7 +82,7 @@ export default function Profile() {
                   <input onChange={onUpload} type="file" id='profile' name='profile' />
               </div>
 
-              <div className="textbox flex flex-col items-center gap-6">
+              <div className="textbox flex flex-col items-center gap-5">
                 <div className="name flex w-3/4 gap-10">
                   <input {...formik.getFieldProps('firstName')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='FirstName' />
                   <input {...formik.getFieldProps('lastName')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='LastName' />
@@ -91,9 +92,12 @@ export default function Profile() {
                   <input {...formik.getFieldProps('mobile')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Mobile No.' />
                   <input {...formik.getFieldProps('email')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Email*' />
                 </div>
-
+                <div className="name flex w-3/4 gap-10">
+                  
                
                   <input {...formik.getFieldProps('address')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Address' />
+                  <Button className="bg-purple-300 hover:bg-blue-200 text-white font-bold py-1 px-4 rounded" href="/order">Orders</Button>
+                </div>
                   <button className={styles.btn} type='submit'>Update</button>
                
                   
@@ -106,7 +110,10 @@ export default function Profile() {
           </form>
 
         </div>
+  
       </div>
+      <br></br>
+    <br></br>
     </div>
   )
 }

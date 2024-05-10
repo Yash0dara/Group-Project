@@ -1,168 +1,218 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
-const SalaryPage = () => {
-  const [employees, setEmployees] = useState([
-    { id: 1, name: "Janith Perera", position: "Web Site Developer", workDays: 0, salary: 0 },
-    { id: 2, name: "Jayantha Adikari", position: "Manager", workDays: 0, salary: 0 },
-    { id: 3, name: "Kasun Rajitha", position: "Senior Trainer", workDays: 0, salary: 0 },
-    { id: 10, name: "Samantha Perera", position: "Senior Trainer", workDays: 0, salary: 0 },
-    { id: 4, name: "Sanka Bandara", position: "Junior Trainer", workDays: 0, salary: 0 },
-    { id: 8, name: "Ranil Gunawardana", position: "Junior Trainer", workDays: 0, salary: 0 },
-    { id: 9, name: "Ajantha Silva", position: "Junior Trainer", workDays: 0, salary: 0 },
-    { id: 5, name: "Nimal Bandara", position: "Minor Staff", workDays: 0, salary: 0 },
-    { id: 6, name: "Kamal Perera", position: "Minor Staff", workDays: 0, salary: 0 },
-    { id: 7, name: "Sunil Fernando", position: "Minor Staff", workDays: 0, salary: 0 },
-  ]);
+export default function Salary() {
+  const [name, setName] = useState("");
+  const [position, setPosition] = useState("");
+  const [workDays, setWorkDays] = useState(0);
+  const [salary, setSalary] = useState(0);
+  const [selectedDate, setSelectedDate] = useState(new Date()); // State for selected date
 
-  const [searchTerm, setSearchTerm] = useState("");
+  useEffect(() => {
+    // Fetch data or any other initialization logic
+  }, []);
 
-  const calculateSalary = (position, workDays) => {
+  function sendData(e) {
+    e.preventDefault();
+
+    let salary = 0;
     switch (position) {
-      case "Web Site Developer":
-        return workDays * 8000;
+      case "Website Developer":
+        salary = workDays * 8000;
+        break;
       case "Manager":
-        return workDays * 10000;
-      case "Senior Trainer":
-        return workDays * 6000;
-      case "Junior Trainer":
-        return workDays * 4000;
+        salary = workDays * 10000;
+        break;
+      case "Senior Instructor":
+        salary = workDays * 6000;
+        break;
+      case "Junior Instructor":
+        salary = workDays * 4000;
+        break;
       case "Minor Staff":
-        return workDays * 2000;
+        salary = workDays * 2000;
+        break;
       default:
-        return 0;
+        salary = 0;
     }
-  };
 
-  const handleSaveSalary = async (employeeId, salary) => {
-    try {
-      const response = await axios.put(`http://localhost:8070/Salary/update/${employeeId}`, {
-        name: employees.find(emp => emp.id === employeeId).name,
-        position: employees.find(emp => emp.id === employeeId).position,
-        workDays: employees.find(emp => emp.id === employeeId).workDays,
-        salary: employees.find(emp => emp.id === employeeId).salary
-         
+    const newSalary = {
+      name: name,
+      position: position,
+      workDays: workDays,
+      salary: salary,
+      date: selectedDate,
+    };
+
+    axios
+      .post("http://localhost:8090/Salary/add", newSalary)
+      .then(() => {
+        alert("Salary Data Added");
+        window.location.reload();
+      })
+      .catch((err) => {
+        alert(err);
       });
+  }
 
-      if (response.status === 200) {
-        console.log(`Updated salary ${salary} for employee with ID ${employeeId}`);
-        // Update the local state to reflect the changes
-        setEmployees(prevEmployees =>
-          prevEmployees.map(employee =>
-            employee.id === employeeId ? { ...employee, salary } : employee
-          )
-        );
-      } else {
-        console.error("Failed to update salary:", response.data);
-        // Handle error
-      }
-    } catch (error) {
-      console.error('Error updating salary:', error);
-      // Handle error
+  const calculateMonthlyPayment = (position, workDays) => {
+    let salary = 0;
+    switch (position) {
+      case "Website Developer":
+        salary = workDays * 8000;
+        break;
+      case "Manager":
+        salary = workDays * 10000;
+        break;
+      case "Senior Instructor":
+        salary = workDays * 6000;
+        break;
+      case "Junior Instructor":
+        salary = workDays * 4000;
+        break;
+      case "Minor Staff":
+        salary = workDays * 2000;
+        break;
+      default:
+        salary = 0;
+    }
+    return salary;
+  };
+
+  const handleWorkDaysChange = (e) => {
+    const value = parseInt(e.target.value);
+    if (!isNaN(value) && value >= 0) {
+      setWorkDays(value);
     }
   };
-
-  const handleViewSalaryHistory = async (employeeId) => {
-    try {
-      // Simulating view salary history functionality for now
-      console.log(`Viewing salary history for employee with ID ${employeeId}`);
-    } catch (error) {
-      console.error('Error viewing salary history:', error);
-      // Handle error
-    }
-  };
-
-  const handleIncreaseWorkDays = (employeeId) => {
-    setEmployees(prevEmployees =>
-      prevEmployees.map(employee =>
-        employee.id === employeeId ? { ...employee, workDays: employee.workDays + 1 } : employee
-      )
-    );
-  };
-
-  const handleDecreaseWorkDays = (employeeId) => {
-    setEmployees(prevEmployees =>
-      prevEmployees.map(employee =>
-        employee.id === employeeId && employee.workDays > 0 ? { ...employee, workDays: employee.workDays - 1 } : employee
-      )
-    );
-  };
-
-  // Function to handle search by employee name
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  // Filter employees based on search term
-  const filteredEmployees = employees.filter(employee =>
-    employee.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <>
-      <div className="max-w-full mx-auto mt-8 px-4 overflow-x-auto">
-        <h1 className="text-3xl font-semibold mb-4">Salary Page (Admin)</h1>
-        <div className="overflow-x-auto">
-          <div className="relative mx-auto font-bold flex justify-center mt-6 mb-4">
-            <input
-              type="text"
-              placeholder="Search by employee name..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className="border-2 border-[#a07628] bg-[#f9f9e9] h-11 w-[500px] pl-5 pr-16 rounded-[14px] text-[13pt] focus:outline-none"
-            />
+      <div className="flex">
+        <div className="w-1/4 bg-gray-800 text-white p-4 mt-16">
+          <h2 className="text-2xl mb-4">Employee Salary Details</h2>
+        </div>
+        <div className="w-3/4">
+          <Navbar />
+          <div>
+            <br />
+            <br />
           </div>
-          <table className="table-auto border-collapse border border-gray-800">
-            <thead>
-              <tr>
-                <th className="px-4 py-2 border border-gray-800">Employee Name</th>
-                <th className="px-4 py-2 border border-gray-800">Position</th>
-                <th className="px-4 py-2 border border-gray-800">Work Days</th>
-                <th className="px-4 py-2 border border-gray-800">Actions</th>
-                <th className="px-4 py-2 border border-gray-800">Salary</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredEmployees.map((employee) => (
-                <tr key={employee.id}>
-                  <td className="px-4 py-2 border border-gray-800">{employee.name}</td>
-                  <td className="px-4 py-2 border border-gray-800">{employee.position}</td>
-                  <td className="px-4 py-2 border border-gray-800">{employee.workDays}</td>
-                  <td className="px-4 py-2 border border-gray-800 flex items-center space-x-2">
-                    <button
-                      className="bg-gray-800 text-white py-1 px-2 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"
-                      onClick={() => handleIncreaseWorkDays(employee.id)}
-                    >
-                      +
-                    </button>
-                    <button
-                      className="bg-gray-800 text-white py-1 px-2 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"
-                      onClick={() => handleDecreaseWorkDays(employee.id)}
-                    >
-                      -
-                    </button>
-                    <button
-                      className="bg-gray-800 text-white py-1 px-2 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"
-                      onClick={() => handleSaveSalary(employee.id, calculateSalary(employee.position, employee.workDays))}
-                    >
-                      Update
-                    </button>
-                    <button
-                      className="bg-gray-800 text-white py-1 px-2 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"
-                      onClick={() => handleViewSalaryHistory(employee.id)}
-                    >
-                      View History
-                    </button>
-                  </td>
-                  <td className="px-4 py-2 border border-gray-800">{calculateSalary(employee.position, employee.workDays)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+
+          <div
+            className="contact_form mt-5 flex items-center justify-center bg-cover"
+            style={{
+              minHeight: "100vh",
+              minWidth:"130vh",
+              backgroundImage: `url('https://e1.pxfuel.com/desktop-wallpaper/679/684/desktop-wallpaper-back-muscle-muscle-back-the-horizontal-bar-workout-gym-gym-training-weight-bodybuilder-section-%D1%81%D0%BF%D0%BE%D1%80%D1%82-gym-fitness.jpg')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <div
+              className="bg-white bg-opacity-80 border border-gray-300 p-8 rounded-lg shadow-lg"
+              style={{
+                border: "5px solid #ccc",
+                padding: "20px",
+                borderRadius: "5px",
+                boxShadow: "0px 0px 10px rgba(0, 0, 0, 5)",
+                maxWidth: "800px",
+              }}
+            >
+              <form id="contact_form" onSubmit={sendData}>
+                <div className="mb-4">
+                  <label htmlFor="exampleFormControlInput1" className="form-label">
+                    Employee's Name
+                  </label>
+                  <select
+                    className="form-control rounded-md"
+                    id="exampleFormControlInput1"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
+                  >
+                    <option value="">Select Employee's Name</option>
+                    <option value="Samadi Wijethunga">Samadi Wijethunga</option>
+                    <option value="Pulasthi Halangoda">Pulasthi Halangoda</option>
+                    <option value="Chamika Adikari">Chamika Adikari</option>
+                    <option value="Yashodara Athapattu">Yashodara Athapattu</option>
+                    <option value="Parakrama Ekanayake">Parakrama Ekanayake</option>
+                    <option value="Limeth Kurukulasooriya">Limeth Kurukulasooriya</option>
+                  </select>
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor="exampleFormControlInput1" className="form-label">
+                    Employee's Post
+                  </label>
+                  <select
+                    className="form-control rounded-md"
+                    id="exampleFormControlInput1"
+                    value={position}
+                    onChange={(e) => {
+                      setPosition(e.target.value);
+                    }}
+                  >
+                    <option value="">Select Employee's Post</option>
+                    <option value="Website Developer">Website Developer</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Senior Instructor">Senior Instructor</option>
+                    <option value="Junior Instructor">Junior Instructor</option>
+                    <option value="Minor Staff">Minor Staff</option>
+                  </select>
+                </div>
+
+                <div className="mb-4 text-center">
+                  <label htmlFor="exampleFormControlInput1" className="form-label">
+                    Working Days
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control rounded-md"
+                    value={workDays}
+                    onChange={handleWorkDaysChange}
+                    min={0}
+                  />
+                </div>
+
+                <div className="mb-4 text-center">
+                  <label htmlFor="datePicker" className="form-label">
+                    Select Date
+                  </label>
+                  <input
+                    type="date"
+                    id="datePicker"
+                    className="form-control rounded-md"
+                    value={selectedDate.toISOString().split('T')[0]}
+                    onChange={(e) => {
+                      const selected = new Date(e.target.value);
+                      if (selected >= new Date().setHours(0, 0, 0, 0)) {
+                        setSelectedDate(selected);
+                      }
+                    }}
+                  />
+                </div>
+
+                <div className="mb-4 text-center">
+                  <label htmlFor="exampleFormControlInput2" className="form-label">
+                    Salary
+                  </label>
+                  <p>{calculateMonthlyPayment(position, workDays)}</p>
+                </div>
+
+                <div className="text-center"> {/* Centered div for the submit button */}
+                  <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </>
-  );slp.jsx
-};
-
-export default SalaryPage;
+  );
+}
