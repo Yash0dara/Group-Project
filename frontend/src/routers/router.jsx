@@ -49,6 +49,11 @@ import ManagerScheduleView from "../Bookings/admin/ManagerScheduleView";
 import MyWorkout from "../Workouts/User/MyWorkout";
 import WorkoutUserView from "../Workouts/User/WorkoutUserView";
 
+import ExerciseForm from "../Workouts/Admin/ExerciseForm";
+import ExerciseList from "../Workouts/Admin/ExerciseList";
+import WorkoutForm from "../Workouts/Admin/WorkoutForm";
+import WorkoutList from "../Workouts/Admin/WorkoutList";
+
 import Username from "../components/Username";
 import Password from "../components/Password";
 import Register from "../components/Register";
@@ -243,6 +248,22 @@ const router = createBrowserRouter([
       }, {
         path:"/admin/dashboard/ManagerScheduleView",
         element:<ManagerScheduleView />
+      }
+      , {
+        path:"/admin/dashboard/ExerciseForm",
+        element:<ExerciseForm />
+      }
+      , {
+        path:"/admin/dashboard/ExerciseList",
+        element:<ExerciseList />
+      }
+      , {
+        path:"/admin/dashboard/WorkoutForm",
+        element:<WorkoutForm />
+      }
+      , {
+        path:"/admin/dashboard/WorkoutList",
+        element:<WorkoutList />
       }
       
       

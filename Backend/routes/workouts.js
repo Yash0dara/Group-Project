@@ -9,6 +9,7 @@ router.post('/add', async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       exercises: req.body.exercises
+      
     });
 
     const newWorkout = await workout.save();
@@ -26,10 +27,10 @@ router.get('/', async (req, res) => {
 
     if (status) {
       // If status is provided, filter workouts by status
-      workouts = await Workout.find({ status: status });
+      workouts = await Workout.find({ status: status }).populate('exercises');
     } else {
       // If no status provided, return all workouts
-      workouts = await Workout.find();
+      workouts = await Workout.find().populate('exercises');
     }
 
     res.json(workouts);
@@ -64,27 +65,66 @@ router.get('/', async (req, res) => {
       res.status(500).json({ message: 'Server Error' });
     }
   });
-  // Update the PUT endpoint to mark a workout as completed
-router.put('/complete/:id', async (req, res) => {
-  try {
-    const workout = await Workout.findByIdAndUpdate(
-      req.params.id,
-      { status: 'completed', completedAt: new Date() },
-      { new: true }
-    );
-    if (!workout) {
-      return res.status(404).json({ message: 'Workout not found' });
+  router.put('/complete/:id', async (req, res) => {
+    try {
+      const workout = await Workout.findByIdAndUpdate(
+        req.params.id,
+        { status: 'completed', completedAt: new Date() },
+        { new: true }
+      );
+      if (!workout) {
+        return res.status(404).json({ message: 'Workout not found' });
+      }
+      res.status(200).json(workout);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
     }
-    res.status(200).json(workout);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server Error' });
-  }
-});
+  });
+  router.put('/ongoing/:id', async (req, res) => {
+    try {
+      const workout = await Workout.findByIdAndUpdate(
+        req.params.id,
+        { status: 'ongoing' },
+        { new: true }
+      );
+      if (!workout) {
+        return res.status(404).json({ message: 'Workout not found' });
+      }
+      res.status(200).json(workout);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
+  router.put('/comlpete/:id', async (req, res) => {
+    try {
+      const workout = await Workout.findByIdAndUpdate(
+        req.params.id,
+        { status: 'comlpeted' },
+        { new: true }
+      );
+      if (!workout) {
+        return res.status(404).json({ message: 'Workout not found' });
+      }
+      res.status(200).json(workout);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
+  
+   
+  
+  
+    
+  
+  module.exports = router;
+  
 
  
 
 
   
 
-module.exports = router;
+

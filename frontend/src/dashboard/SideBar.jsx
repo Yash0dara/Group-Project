@@ -34,8 +34,9 @@ const SideBar = () => {
 
           </Sidebar.Collapse>
           <Sidebar.Collapse icon={HiOutlineFire} label="Workout Management">
-            <Sidebar.Item  href="#"> lorem</Sidebar.Item>
-            <Sidebar.Item  href="#"> lorem</Sidebar.Item>
+            <Sidebar.Item  href="/admin/dashboard/ExerciseList"> Exercises</Sidebar.Item>
+            <Sidebar.Item  href="/admin/dashboard/WorkoutList"> Workout</Sidebar.Item>
+            
 
           </Sidebar.Collapse>
           <Sidebar.Collapse icon={HiOutlineBookOpen} label="Booking Management">
